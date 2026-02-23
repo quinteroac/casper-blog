@@ -1,0 +1,93 @@
+{
+  "goals": [
+    "Enable end users to browse a list of posts sourced from Gist",
+    "Enable end users to open and read a single post with Markdown rendered correctly",
+    "Use Gist as the sole source of truth for post content"
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "View List of Posts",
+      "description": "As a visitor, I want to see a list of posts so that I can choose what to read.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "Posts are fetched from a configured Gist (or Gist collection)"
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "Each list item shows at least: title and a short preview or date"
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "List is ordered (e.g. by date, newest first)"
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "Clicking an item navigates to the full post view"
+        },
+        {
+          "id": "US-001-AC05",
+          "text": "Typecheck / lint passes"
+        },
+        {
+          "id": "US-001-AC06",
+          "text": "Visually verified in browser"
+        }
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Read a Full Post",
+      "description": "As a visitor, I want to open and read a full post so that I can consume the content.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-002-AC01",
+          "text": "Full post content is loaded from the corresponding Gist file"
+        },
+        {
+          "id": "US-002-AC02",
+          "text": "Markdown is rendered as HTML (headings, lists, code blocks, links, etc.)"
+        },
+        {
+          "id": "US-002-AC03",
+          "text": "Post title is displayed"
+        },
+        {
+          "id": "US-002-AC04",
+          "text": "User can return to the list (e.g. back link or navigation)"
+        },
+        {
+          "id": "US-002-AC05",
+          "text": "Typecheck / lint passes"
+        },
+        {
+          "id": "US-002-AC06",
+          "text": "Visually verified in browser"
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "** The app fetches post metadata and content from GitHub Gist API."
+    },
+    {
+      "id": "FR-2",
+      "description": "** Post content is stored as Markdown in Gist files."
+    },
+    {
+      "id": "FR-3",
+      "description": "** The app renders Markdown to HTML for display."
+    },
+    {
+      "id": "FR-4",
+      "description": "** A configurable Gist ID (or list of IDs) defines the post source."
+    },
+    {
+      "id": "FR-5",
+      "description": "** Posts have a title (from Gist filename or frontmatter) and body content."
+    }
+  ]
+}
