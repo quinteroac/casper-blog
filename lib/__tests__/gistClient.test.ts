@@ -8,6 +8,7 @@ import {
   fetchPublicGistsForUser,
   fetchPostsFromAccount,
   getGistIdsForAccount,
+  createGist,
 } from "../gistClient";
 
 describe("gistClient", () => {
@@ -406,6 +407,85 @@ describe("gistClient", () => {
 
       const result = await getPostBySlug("nonexistent", ["g1"]);
       expect(result).toBeNull();
+    });
+  });
+
+  describe("US-003: createGist", () => {
+    it("US-003-AC01: creates a new Gist via GitHub API with token", async () => {
+      const mockResponse = {
+        id: "new-gist-123",
+        files: { "My-Post.md": { filename: "My-Post.md", type: "text/markdown", content: "# Hello" } },
+        created_at: "2026-02-24T10:00:00Z",
+        updated_at: "2026-02-24T10:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      const result = await createGist("ghp_token123", "My Post", "# Hello");
+
+      expect(result.id).toBe("new-gist-123");
+      expect(result.filename).toBe("My-Post.md");
+      expect(result.slug).toBe("my-post");
+      expect(result.title).toBe("My Post");
+      expect(result.date).toBe("2026-02-24T10:00:00Z");
+
+      expect(fetch).toHaveBeenCalledWith(
+        "https://api.github.com/gists",
+        expect.objectContaining({
+          method: "POST",
+          headers: expect.objectContaining({
+            Authorization: "Bearer ghp_token123",
+          }),
+        })
+      );
+    });
+
+    it("US-003-AC01: sends correct body with public gist and .md file", async () => {
+      const mockResponse = {
+        id: "g1",
+        files: {},
+        created_at: "2026-02-24T10:00:00Z",
+        updated_at: "2026-02-24T10:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockResponse,
+      } as Response);
+
+      await createGist("token", "Test Title", "Content body");
+
+      const callBody = JSON.parse(
+        (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls[0][1].body
+      );
+      expect(callBody.public).toBe(true);
+      expect(callBody.description).toBe("Test Title");
+      expect(callBody.files["Test-Title.md"].content).toBe("Content body");
+    });
+
+    it("US-003-AC04: throws on API error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        text: async () => "Unauthorized",
+      } as Response);
+
+      await expect(createGist("bad-token", "Title", "Body")).rejects.toThrow(
+        "GitHub API error (401)"
+      );
+    });
+
+    it("US-003-AC04: throws on network error", async () => {
+      vi.spyOn(global, "fetch").mockRejectedValueOnce(
+        new Error("Network failure")
+      );
+
+      await expect(createGist("token", "Title", "Body")).rejects.toThrow(
+        "Network failure"
+      );
     });
   });
 });

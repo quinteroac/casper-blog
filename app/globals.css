@@ -199,3 +199,357 @@ body {
   border-left: 4px solid #ccc;
   color: #555;
 }
+
+/* ── Admin Login ─────────────────────────────────────────────── */
+
+.admin-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+.admin-login__card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 2.5rem;
+  max-width: 24rem;
+  width: 100%;
+  text-align: center;
+}
+
+.admin-login__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.admin-login__description {
+  margin: 0 0 1.5rem;
+  color: #666;
+  font-size: 0.9375rem;
+}
+
+.admin-login__error {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+  font-size: 0.875rem;
+}
+
+.admin-login__button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-login__button:hover {
+  background: #333;
+}
+
+/* ── Admin Dashboard ─────────────────────────────────────────── */
+
+.admin-dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-dashboard__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.admin-dashboard__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-dashboard__username {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.admin-dashboard__logout {
+  padding: 0.375rem 0.75rem;
+  background: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: #666;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.admin-dashboard__logout:hover {
+  border-color: #ccc;
+  color: #1a1a1a;
+}
+
+.admin-dashboard__content {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.admin-dashboard__welcome {
+  margin: 0;
+  color: #666;
+  font-size: 0.9375rem;
+}
+
+.admin-dashboard__new-post {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-dashboard__new-post:hover {
+  background: #333;
+}
+
+/* ── Admin Dashboard: Success Banner ──────────────────────── */
+
+.admin-dashboard__success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  color: #166534;
+  font-size: 0.9375rem;
+}
+
+.admin-dashboard__success-dismiss {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #166534;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+
+.admin-dashboard__success-dismiss:hover {
+  color: #14532d;
+}
+
+/* ── Admin Dashboard: Posts List ──────────────────────────── */
+
+.admin-dashboard__posts {
+  margin-top: 1.5rem;
+}
+
+.admin-dashboard__posts-heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.admin-dashboard__posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-dashboard__posts-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+.admin-dashboard__posts-link {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.admin-dashboard__posts-link:hover {
+  text-decoration: underline;
+}
+
+.admin-dashboard__posts-date {
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+/* ── New Post Form ─────────────────────────────────────────── */
+
+.new-post-form__save-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+  font-size: 0.875rem;
+}
+
+.new-post-form__heading {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.new-post-form__field {
+  margin-bottom: 1.25rem;
+}
+
+.new-post-form__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.new-post-form__label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.new-post-form__input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.new-post-form__input:focus {
+  border-color: #0066cc;
+}
+
+.new-post-form__input--error {
+  border-color: #dc2626;
+}
+
+.new-post-form__textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 0.9375rem;
+  font-family: ui-monospace, monospace;
+  line-height: 1.6;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.new-post-form__textarea:focus {
+  border-color: #0066cc;
+}
+
+.new-post-form__textarea--error {
+  border-color: #dc2626;
+}
+
+.new-post-form__preview {
+  min-height: 12rem;
+  padding: 0.75rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.new-post-form__preview-empty {
+  color: #999;
+  margin: 0;
+}
+
+.new-post-form__toggle-preview {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  background: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.new-post-form__toggle-preview:hover {
+  border-color: #ccc;
+  color: #1a1a1a;
+}
+
+.new-post-form__error {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: #dc2626;
+}
+
+.new-post-form__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.new-post-form__button {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.new-post-form__button--primary {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.new-post-form__button--primary:hover {
+  background: #333;
+}
+
+.new-post-form__button--secondary {
+  background: none;
+  border: 1px solid #e5e5e5;
+  color: #666;
+}
+
+.new-post-form__button--secondary:hover {
+  border-color: #ccc;
+  color: #1a1a1a;
+}
