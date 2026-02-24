@@ -161,6 +161,19 @@ describe("HomePage", () => {
       expect(screen.getByText(/No posts yet/i)).toBeInTheDocument();
     });
 
+    it("US-003-AC04: when both README and Users API fail, section omitted gracefully — no error shown", async () => {
+      testConfig.GIST_ACCOUNT = "octocat";
+      vi.mocked(fetchAboutMeContent).mockResolvedValueOnce(null);
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(screen.queryByRole("heading", { name: "About Me" })).toBeNull();
+      expect(screen.queryByText(/error/i)).toBeNull();
+      expect(screen.getByText(/No posts yet/i)).toBeInTheDocument();
+    });
+
     it("renders profile fallback when README not available", async () => {
       testConfig.GIST_ACCOUNT = "octocat";
       vi.mocked(fetchAboutMeContent).mockResolvedValueOnce({

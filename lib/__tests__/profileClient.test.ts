@@ -174,5 +174,45 @@ describe("profileClient", () => {
       const result = await fetchAboutMeContent("octocat");
       expect(result).toBeNull();
     });
+
+    it("US-003-AC01: falls back to api.github.com/users/{username} when README returns non-200", async () => {
+      const fetchSpy = vi.spyOn(global, "fetch")
+        .mockResolvedValueOnce({ ok: false } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            avatar_url: "https://avatars.github.com/johndoe",
+            name: "John Doe",
+            bio: null,
+            location: null,
+            blog: null,
+            login: "johndoe",
+          }),
+        } as Response);
+
+      const result = await fetchAboutMeContent("johndoe");
+
+      expect(result).toEqual({
+        type: "profile",
+        fields: expect.objectContaining({
+          name: "John Doe",
+          username: "johndoe",
+        }),
+      });
+      expect(fetchSpy).toHaveBeenNthCalledWith(
+        2,
+        "https://api.github.com/users/johndoe",
+        expect.any(Object)
+      );
+    });
+
+    it("US-003-AC04: returns null when both README and Users API fail — section omitted gracefully", async () => {
+      vi.spyOn(global, "fetch")
+        .mockResolvedValueOnce({ ok: false } as Response)
+        .mockResolvedValueOnce({ ok: false } as Response);
+
+      const result = await fetchAboutMeContent("nonexistent");
+      expect(result).toBeNull();
+    });
   });
 });

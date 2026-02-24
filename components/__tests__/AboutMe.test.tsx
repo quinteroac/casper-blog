@@ -72,6 +72,50 @@ describe("AboutMe", () => {
       expect(screen.getByText("minimal")).toBeInTheDocument();
     });
 
+    it("US-003-AC02: fallback renders at minimum avatar and display name", () => {
+      render(
+        <AboutMe
+          content={{
+            type: "profile",
+            fields: {
+              avatarUrl: "https://example.com/av.png",
+              name: "Alice",
+              bio: null,
+              location: null,
+              website: null,
+              username: "alice",
+            },
+          }}
+        />
+      );
+      const avatar = screen.getByRole("img", { name: "Avatar for alice" });
+      expect(avatar).toBeInTheDocument();
+      expect(avatar).toHaveAttribute("src", expect.stringContaining("alice"));
+      expect(screen.getByText("Alice")).toBeInTheDocument();
+    });
+
+    it("US-003-AC03: optional fields (bio, location, website) shown when present", () => {
+      render(
+        <AboutMe
+          content={{
+            type: "profile",
+            fields: {
+              avatarUrl: "https://example.com/av.png",
+              name: "Bob",
+              bio: "Dev at Acme",
+              location: "NYC",
+              website: "https://bob.dev",
+              username: "bob",
+            },
+          }}
+        />
+      );
+      expect(screen.getByText("Dev at Acme")).toBeInTheDocument();
+      expect(screen.getByText(/NYC/)).toBeInTheDocument();
+      const link = screen.getByRole("link", { name: "https://bob.dev" });
+      expect(link).toHaveAttribute("href", "https://bob.dev");
+    });
+
     it("adds https to website when missing", () => {
       render(
         <AboutMe
