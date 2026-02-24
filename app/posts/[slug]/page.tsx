@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   getPostBySlug,
   getGistIdsForAccount,
@@ -19,17 +20,7 @@ export default async function PostPage({ params }: PostPageProps) {
     gistIds.length > 0 ? await getPostBySlug(slug, gistIds) : null;
 
   if (!post) {
-    return (
-      <>
-        <Link href="/" className="back-link">
-          ← Back to list
-        </Link>
-        <article>
-          <h1>Post not found</h1>
-          <p>No post was found for &quot;{slug}&quot;.</p>
-        </article>
-      </>
-    );
+    notFound();
   }
 
   return (
