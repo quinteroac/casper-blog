@@ -86,6 +86,53 @@ bun run start
 
 ---
 
+## Deployment (Vercel)
+
+This project is optimized for deployment on [Vercel](https://vercel.com), the platform built by the creators of Next.js.
+
+### One-click deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/casper-blog)
+
+> Replace the `repository-url` with your actual repository URL.
+
+### Manual deploy via CLI
+
+1. **Install the Vercel CLI**
+
+   ```bash
+   bun add -g vercel
+   ```
+
+2. **Log in to Vercel**
+
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy**
+
+   ```bash
+   vercel          # preview deployment
+   vercel --prod   # production deployment
+   ```
+
+### Environment variables on Vercel
+
+Set your environment variables in the Vercel dashboard under **Project → Settings → Environment Variables**, or via the CLI:
+
+```bash
+vercel env add GIST_ACCOUNT
+```
+
+| Variable          | Required  | Description                                           |
+| ----------------- | --------- | ----------------------------------------------------- |
+| `GIST_ACCOUNT`    | Recommended | GitHub username whose public Gists are used as posts |
+| `GITHUB_USERNAME` | Optional  | Fallback for `GIST_ACCOUNT`                           |
+| `GIST_IDS`        | Optional  | Fallback: comma-separated Gist IDs                    |
+
+---
+
 ## Testing
 
 Run the test suite once:
