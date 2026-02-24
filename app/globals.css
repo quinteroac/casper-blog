@@ -121,3 +121,81 @@ body {
 .back-link:hover {
   text-decoration: underline;
 }
+
+.post-title {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.post-content {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin: 1.5em 0 0.5em;
+  font-weight: 600;
+}
+
+.post-content h1 { font-size: 1.75rem; }
+.post-content h2 { font-size: 1.5rem; }
+.post-content h3 { font-size: 1.25rem; }
+
+.post-content p {
+  margin: 0 0 1em;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 1em;
+  padding-left: 1.5em;
+}
+
+.post-content li {
+  margin-bottom: 0.25em;
+}
+
+.post-content code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+  background: #f0f0f0;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+.post-content pre {
+  margin: 1em 0;
+  padding: 1rem;
+  background: #1a1a1a;
+  color: #e5e5e5;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.post-content pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+.post-content a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.post-content a:hover {
+  text-decoration: underline;
+}
+
+.post-content blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 4px solid #ccc;
+  color: #555;
+}

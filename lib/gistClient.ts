@@ -90,3 +90,33 @@ export async function fetchPosts(gistIds: string[]): Promise<Post[]> {
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 }
+
+export async function fetchPostContent(
+  gistId: string,
+  filename: string
+): Promise<string | null> {
+  const gist = await fetchGist(gistId);
+  if (!gist) return null;
+  const file = gist.files[filename];
+  if (!file?.content) return null;
+  return file.content;
+}
+
+export interface PostWithContent extends Post {
+  content: string;
+}
+
+export async function getPostBySlug(
+  slug: string,
+  gistIds: string[]
+): Promise<PostWithContent | null> {
+  const posts = await fetchPosts(gistIds);
+  const normalizedSlug = slug.toLowerCase();
+  const post = posts.find((p) => p.slug === normalizedSlug);
+  if (!post) return null;
+
+  const content = await fetchPostContent(post.gistId, post.filename);
+  if (content === null) return null;
+
+  return { ...post, content };
+}

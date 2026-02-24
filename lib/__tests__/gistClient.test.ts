@@ -3,6 +3,8 @@ import {
   fetchGist,
   gistToPosts,
   fetchPosts,
+  fetchPostContent,
+  getPostBySlug,
 } from "../gistClient";
 
 describe("gistClient", () => {
@@ -177,6 +179,110 @@ describe("gistClient", () => {
 
       const posts = gistToPosts(gist as Parameters<typeof gistToPosts>[0]);
       expect(posts[0].slug).toBe("my-awesome-post");
+    });
+  });
+
+  describe("US-002-AC01: Full post content is loaded from the corresponding Gist file", () => {
+    it("fetchPostContent returns file content when gist and file exist", async () => {
+      const mockGist = {
+        id: "abc123",
+        files: {
+          "my-post.md": {
+            filename: "my-post.md",
+            type: "text/markdown",
+            content: "# My Post\n\nFull content here.",
+          },
+        },
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-02-01T00:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGist,
+      } as Response);
+
+      const content = await fetchPostContent("abc123", "my-post.md");
+      expect(content).toBe("# My Post\n\nFull content here.");
+    });
+
+    it("fetchPostContent returns null when gist fetch fails", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: false,
+      } as Response);
+
+      const content = await fetchPostContent("bad-id", "missing.md");
+      expect(content).toBeNull();
+    });
+
+    it("fetchPostContent returns null when file does not exist in gist", async () => {
+      const mockGist = {
+        id: "abc123",
+        files: {
+          "other-post.md": {
+            filename: "other-post.md",
+            type: "text/markdown",
+            content: "Other",
+          },
+        },
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-02-01T00:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGist,
+      } as Response);
+
+      const content = await fetchPostContent("abc123", "my-post.md");
+      expect(content).toBeNull();
+    });
+
+    it("getPostBySlug returns post with content when slug matches", async () => {
+      const mockGist = {
+        id: "g1",
+        files: {
+          "hello-world.md": {
+            filename: "hello-world.md",
+            type: "text/markdown",
+            content: "# Hello World\n\nThis is the full post body.",
+          },
+        },
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-02-20T12:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch")
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockGist,
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockGist,
+        } as Response);
+
+      const result = await getPostBySlug("hello-world", ["g1"]);
+      expect(result).not.toBeNull();
+      expect(result?.title).toBe("hello world");
+      expect(result?.content).toBe(
+        "# Hello World\n\nThis is the full post body."
+      );
+    });
+
+    it("getPostBySlug returns null when slug does not match any post", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          id: "g1",
+          files: {},
+          created_at: "2025-01-01T00:00:00Z",
+          updated_at: "2025-02-20T00:00:00Z",
+        }),
+      } as Response);
+
+      const result = await getPostBySlug("nonexistent", ["g1"]);
+      expect(result).toBeNull();
     });
   });
 });
