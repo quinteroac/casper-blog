@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { signOut } from "next-auth/react";
+import NewPostForm from "@/components/NewPostForm";
 
 interface AdminDashboardProps {
   userName: string;
 }
 
 export default function AdminDashboard({ userName }: AdminDashboardProps) {
+  const [showNewPost, setShowNewPost] = useState(false);
+
   return (
     <div className="admin-dashboard">
       <div className="admin-dashboard__header">
@@ -22,10 +26,16 @@ export default function AdminDashboard({ userName }: AdminDashboardProps) {
         </div>
       </div>
       <div className="admin-dashboard__content">
-        <p className="admin-dashboard__welcome">
-          Welcome to the admin panel. Content management features are coming
-          soon.
-        </p>
+        {showNewPost ? (
+          <NewPostForm onCancel={() => setShowNewPost(false)} />
+        ) : (
+          <button
+            className="admin-dashboard__new-post"
+            onClick={() => setShowNewPost(true)}
+          >
+            New post
+          </button>
+        )}
       </div>
     </div>
   );
