@@ -18,7 +18,7 @@ A blog powered by Next.js and GitHub Gists.
 1. **Clone the repository**
 
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/quinteroac/casper-blog.git
    cd casper-blog
    ```
 
@@ -92,9 +92,7 @@ This project is optimized for deployment on [Vercel](https://vercel.com), the pl
 
 ### One-click deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/casper-blog)
-
-> Replace the `repository-url` with your actual repository URL.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/quinteroac/casper-blog)
 
 ### Manual deploy via CLI
 
