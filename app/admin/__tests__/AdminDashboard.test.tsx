@@ -8,9 +8,22 @@ vi.mock("next-auth/react", () => ({
 
 // Mock NewPostForm to avoid pulling in react-markdown
 vi.mock("@/components/NewPostForm", () => ({
-  default: ({ onCancel }: { onCancel: () => void }) => (
+  default: ({ onCancel, onSaved }: { onCancel: () => void; onSaved?: (post: unknown) => void }) => (
     <div data-testid="new-post-form">
       <button onClick={onCancel}>Cancel</button>
+      <button
+        onClick={() =>
+          onSaved?.({
+            id: "gist-1",
+            title: "Test Post",
+            slug: "test-post",
+            filename: "Test-Post.md",
+            date: "2026-02-24T10:00:00Z",
+          })
+        }
+      >
+        Mock Save
+      </button>
     </div>
   ),
 }));
@@ -63,6 +76,79 @@ describe("US-002: New post form integration in dashboard", () => {
       fireEvent.click(screen.getByText("Cancel"));
       expect(screen.queryByTestId("new-post-form")).not.toBeInTheDocument();
       expect(screen.getByText("New post")).toBeInTheDocument();
+    });
+  });
+});
+
+describe("US-003: Save Gist and view created posts", () => {
+  describe("US-003-AC02: After save, admin sees success feedback and the new post in a list", () => {
+    it("shows success message after saving a post", () => {
+      render(<AdminDashboard userName="testuser" />);
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      expect(screen.getByRole("status")).toHaveTextContent(
+        'Post "Test Post" saved successfully!'
+      );
+    });
+
+    it("hides the form after successful save", () => {
+      render(<AdminDashboard userName="testuser" />);
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      expect(screen.queryByTestId("new-post-form")).not.toBeInTheDocument();
+      expect(screen.getByText("New post")).toBeInTheDocument();
+    });
+
+    it("shows the saved post in a 'Your Posts' list", () => {
+      render(<AdminDashboard userName="testuser" />);
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      expect(screen.getByText("Your Posts")).toBeInTheDocument();
+      expect(screen.getByText("Test Post")).toBeInTheDocument();
+    });
+
+    it("links the saved post to its detail page", () => {
+      render(<AdminDashboard userName="testuser" />);
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      const link = screen.getByText("Test Post");
+      expect(link.closest("a")).toHaveAttribute("href", "/posts/test-post");
+    });
+
+    it("allows dismissing the success message", () => {
+      render(<AdminDashboard userName="testuser" />);
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      expect(screen.getByRole("status")).toBeInTheDocument();
+      fireEvent.click(screen.getByLabelText("Dismiss"));
+      expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    });
+
+    it("accumulates multiple saved posts in the list", () => {
+      render(<AdminDashboard userName="testuser" />);
+
+      // Save first post
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      // Save second post
+      fireEvent.click(screen.getByText("New post"));
+      fireEvent.click(screen.getByText("Mock Save"));
+
+      const postItems = screen.getAllByText("Test Post");
+      expect(postItems).toHaveLength(2);
+    });
+  });
+
+  describe("US-003-AC03: does not show 'Your Posts' heading when no posts saved", () => {
+    it("does not render the posts section initially", () => {
+      render(<AdminDashboard userName="testuser" />);
+      expect(screen.queryByText("Your Posts")).not.toBeInTheDocument();
     });
   });
 });

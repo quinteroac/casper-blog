@@ -176,6 +176,54 @@ export interface PostWithContent extends Post {
   content: string;
 }
 
+export interface CreateGistResult {
+  id: string;
+  filename: string;
+  slug: string;
+  title: string;
+  date: string;
+}
+
+export async function createGist(
+  token: string,
+  title: string,
+  body: string
+): Promise<CreateGistResult> {
+  const filename = `${title.trim().replace(/\s+/g, "-")}.md`;
+
+  const res = await fetch(`${GITHUB_API_BASE}/gists`, {
+    method: "POST",
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      description: title.trim(),
+      public: true,
+      files: {
+        [filename]: { content: body },
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const errorBody = await res.text();
+    throw new Error(
+      `GitHub API error (${res.status}): ${errorBody}`
+    );
+  }
+
+  const gist = (await res.json()) as GistResponse;
+  return {
+    id: gist.id,
+    filename,
+    slug: slugFromFilename(filename),
+    title: title.trim(),
+    date: gist.created_at,
+  };
+}
+
 export async function getPostBySlug(
   slug: string,
   gistIds: string[]

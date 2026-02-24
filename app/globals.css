@@ -330,7 +330,92 @@ body {
   background: #333;
 }
 
+/* ── Admin Dashboard: Success Banner ──────────────────────── */
+
+.admin-dashboard__success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  color: #166534;
+  font-size: 0.9375rem;
+}
+
+.admin-dashboard__success-dismiss {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #166534;
+  padding: 0 0.25rem;
+  line-height: 1;
+}
+
+.admin-dashboard__success-dismiss:hover {
+  color: #14532d;
+}
+
+/* ── Admin Dashboard: Posts List ──────────────────────────── */
+
+.admin-dashboard__posts {
+  margin-top: 1.5rem;
+}
+
+.admin-dashboard__posts-heading {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.admin-dashboard__posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-dashboard__posts-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+.admin-dashboard__posts-link {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.admin-dashboard__posts-link:hover {
+  text-decoration: underline;
+}
+
+.admin-dashboard__posts-date {
+  font-size: 0.8125rem;
+  color: #666;
+}
+
 /* ── New Post Form ─────────────────────────────────────────── */
+
+.new-post-form__save-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #991b1b;
+  font-size: 0.875rem;
+}
 
 .new-post-form__heading {
   margin: 0 0 1.5rem;

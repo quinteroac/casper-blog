@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 // Mock react-markdown to avoid ESM issues in test environment
 vi.mock("react-markdown", () => ({
@@ -128,6 +128,183 @@ describe("US-002: Create posts with Markdown editor", () => {
       fireEvent.click(screen.getByText("Save"));
       expect(screen.getByText("Title is required.")).toBeInTheDocument();
       expect(screen.getByText("Body is required.")).toBeInTheDocument();
+    });
+  });
+});
+
+describe("US-003: Save Gist and view created posts", () => {
+  const onCancel = vi.fn();
+  const onSaved = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(global, "fetch").mockReset();
+  });
+
+  describe("US-003-AC01: Save button creates a new Gist via the GitHub API", () => {
+    it("calls /api/gists on save with title and body", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          id: "gist-1",
+          title: "My Post",
+          slug: "my-post",
+          filename: "My-Post.md",
+          date: "2026-02-24T10:00:00Z",
+        }),
+      } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "My Post" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "# Hello" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith("/api/gists", expect.objectContaining({
+          method: "POST",
+        }));
+      });
+    });
+
+    it("shows 'Saving…' while the request is in flight", async () => {
+      let resolvePromise: (value: Response) => void;
+      const responsePromise = new Promise<Response>((resolve) => {
+        resolvePromise = resolve;
+      });
+      vi.spyOn(global, "fetch").mockReturnValueOnce(responsePromise);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      expect(screen.getByText("Saving…")).toBeInTheDocument();
+
+      resolvePromise!({
+        ok: true,
+        json: async () => ({ id: "g1", title: "Title", slug: "title", filename: "Title.md", date: "2026-01-01T00:00:00Z" }),
+      } as Response);
+
+      await waitFor(() => {
+        expect(screen.getByText("Save")).toBeInTheDocument();
+      });
+    });
+
+    it("disables inputs while saving", async () => {
+      let resolvePromise: (value: Response) => void;
+      const responsePromise = new Promise<Response>((resolve) => {
+        resolvePromise = resolve;
+      });
+      vi.spyOn(global, "fetch").mockReturnValueOnce(responsePromise);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(screen.getByText("Saving…")).toBeInTheDocument();
+      });
+
+      expect(screen.getByLabelText("Title")).toBeDisabled();
+      expect(screen.getByLabelText("Body")).toBeDisabled();
+
+      resolvePromise!({
+        ok: true,
+        json: async () => ({ id: "g1", title: "Title", slug: "title", filename: "Title.md", date: "2026-01-01T00:00:00Z" }),
+      } as Response);
+
+      await waitFor(() => {
+        expect(screen.getByText("Save")).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("US-003-AC02: After save, admin sees success feedback", () => {
+    it("calls onSaved with the created post after successful save", async () => {
+      const savedData = {
+        id: "gist-1",
+        title: "My Post",
+        slug: "my-post",
+        filename: "My-Post.md",
+        date: "2026-02-24T10:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => savedData,
+      } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "My Post" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "# Hello" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(onSaved).toHaveBeenCalledWith(savedData);
+      });
+    });
+  });
+
+  describe("US-003-AC04: Save failure shows a clear error message", () => {
+    it("shows error message when API returns an error", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: false,
+        status: 502,
+        json: async () => ({ error: "GitHub API error (401): Unauthorized" }),
+      } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(screen.getByRole("alert")).toHaveTextContent("GitHub API error (401): Unauthorized");
+      });
+      expect(onSaved).not.toHaveBeenCalled();
+    });
+
+    it("shows generic error message when fetch throws", async () => {
+      vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("Network failure"));
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(screen.getByRole("alert")).toHaveTextContent("Network failure");
+      });
+    });
+
+    it("clears error when retrying save", async () => {
+      vi.spyOn(global, "fetch")
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 500,
+          json: async () => ({ error: "Server error" }),
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ id: "g1", title: "Title", slug: "title", filename: "Title.md", date: "2026-01-01T00:00:00Z" }),
+        } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
+      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(screen.getByRole("alert")).toBeInTheDocument();
+      });
+
+      // Retry
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      });
     });
   });
 });

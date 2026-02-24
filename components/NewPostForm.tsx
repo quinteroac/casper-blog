@@ -3,15 +3,26 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
-interface NewPostFormProps {
-  onCancel: () => void;
+export interface SavedPost {
+  id: string;
+  title: string;
+  slug: string;
+  filename: string;
+  date: string;
 }
 
-export default function NewPostForm({ onCancel }: NewPostFormProps) {
+interface NewPostFormProps {
+  onCancel: () => void;
+  onSaved?: (post: SavedPost) => void;
+}
+
+export default function NewPostForm({ onCancel, onSaved }: NewPostFormProps) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState<{ title?: string; body?: string }>({});
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   function validate(): boolean {
     const newErrors: { title?: string; body?: string } = {};
@@ -25,14 +36,49 @@ export default function NewPostForm({ onCancel }: NewPostFormProps) {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!validate()) return;
-    // Save functionality will be implemented in US-003
+    setSaving(true);
+    setSaveError(null);
+
+    try {
+      const res = await fetch("/api/gists", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: title.trim(), body: body }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Save failed (${res.status})`);
+      }
+
+      const result = await res.json();
+      onSaved?.({
+        id: result.id,
+        title: result.title,
+        slug: result.slug,
+        filename: result.filename,
+        date: result.date,
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to save post";
+      setSaveError(message);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <div className="new-post-form">
       <h2 className="new-post-form__heading">New Post</h2>
+
+      {saveError && (
+        <div className="new-post-form__save-error" role="alert">
+          {saveError}
+        </div>
+      )}
 
       <div className="new-post-form__field">
         <label className="new-post-form__label" htmlFor="post-title">
@@ -48,6 +94,7 @@ export default function NewPostForm({ onCancel }: NewPostFormProps) {
             if (errors.title) setErrors((prev) => ({ ...prev, title: undefined }));
           }}
           placeholder="Post title"
+          disabled={saving}
         />
         {errors.title && (
           <span className="new-post-form__error">{errors.title}</span>
@@ -87,6 +134,7 @@ export default function NewPostForm({ onCancel }: NewPostFormProps) {
             }}
             placeholder="Write your post in Markdown..."
             rows={16}
+            disabled={saving}
           />
         )}
         {errors.body && (
@@ -99,6 +147,7 @@ export default function NewPostForm({ onCancel }: NewPostFormProps) {
           type="button"
           className="new-post-form__button new-post-form__button--secondary"
           onClick={onCancel}
+          disabled={saving}
         >
           Cancel
         </button>
@@ -106,8 +155,9 @@ export default function NewPostForm({ onCancel }: NewPostFormProps) {
           type="button"
           className="new-post-form__button new-post-form__button--primary"
           onClick={handleSave}
+          disabled={saving}
         >
-          Save
+          {saving ? "Saving…" : "Save"}
         </button>
       </div>
     </div>
