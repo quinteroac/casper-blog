@@ -1,0 +1,93 @@
+{
+  "goals": [
+    "Fetch posts from all public Gists of a configured GitHub account",
+    "Use slug-based URLs for posts (e.g. `/posts/my-post`) instead of Gist IDs",
+    "Remove the need to maintain a list of Gist IDs in the environment"
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "List posts from Gist account",
+      "description": "As a visitor, I want to see a list of all public Gist-based posts from the configured account so that I can browse the blog without manual Gist ID configuration.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "The homepage shows a list of public Gists from the account defined in env (e.g. `GIST_ACCOUNT` or `GITHUB_USERNAME`)"
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "Each list item displays post metadata (title or filename, date if available)"
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "The list is fetched server-side from the GitHub Gists API"
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "If the account has no public Gists, the list is empty (no error)"
+        },
+        {
+          "id": "US-001-AC05",
+          "text": "Typecheck / lint passes"
+        },
+        {
+          "id": "US-001-AC06",
+          "text": "**Visually verified in browser**"
+        }
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Open post by slug",
+      "description": "As a visitor, I want to open a post by its slug (e.g. `/posts/hello-world`) so that I can read the content with a readable, stable URL.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-002-AC01",
+          "text": "A post is reachable at `/posts/[slug]` where slug maps to a Gist (e.g. derived from the first filename without extension)"
+        },
+        {
+          "id": "US-002-AC02",
+          "text": "The correct Gist content is rendered as Markdown for the given slug"
+        },
+        {
+          "id": "US-002-AC03",
+          "text": "Invalid or unknown slugs return a 404"
+        },
+        {
+          "id": "US-002-AC04",
+          "text": "Typecheck / lint passes"
+        },
+        {
+          "id": "US-002-AC05",
+          "text": "**Visually verified in browser**"
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "** A single env variable (e.g. `GIST_ACCOUNT`) defines the GitHub username whose public Gists are used as posts."
+    },
+    {
+      "id": "FR-2",
+      "description": "** The app fetches the list of public Gists via `GET /users/{username}/gists` (or equivalent)."
+    },
+    {
+      "id": "FR-3",
+      "description": "** Post slugs are derived from Gist filenames (e.g. `hello-world.md` → slug `hello-world`); the convention is documented or configurable."
+    },
+    {
+      "id": "FR-4",
+      "description": "** The homepage renders the list of posts with links to `/posts/[slug]`."
+    },
+    {
+      "id": "FR-5",
+      "description": "** The post detail page fetches and renders the Gist file content as Markdown for the requested slug."
+    },
+    {
+      "id": "FR-6",
+      "description": "** Gist ID configuration in env is removed or deprecated in favour of account-based fetching."
+    }
+  ]
+}
