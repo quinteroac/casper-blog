@@ -56,6 +56,28 @@ describe("HomePage", () => {
       expect(screen.getByText("My Post")).toBeInTheDocument();
       expect(screen.getByText(/Feb 20, 2025/)).toBeInTheDocument();
     });
+
+    it("US-001-AC01: renders author avatar on post list page", async () => {
+      testConfig.GIST_ACCOUNT = "octocat";
+      testConfig.GIST_IDS = [];
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([
+        {
+          slug: "my-post",
+          title: "My Post",
+          date: "2025-02-20T12:00:00Z",
+          preview: "Preview text",
+          gistId: "g1",
+          filename: "my-post.md",
+        },
+      ]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      // Avatar should be rendered (img with GitHub URL derived from GIST_ACCOUNT)
+      const avatars = screen.getAllByRole("img", { name: /avatar for octocat/i });
+      expect(avatars.length).toBeGreaterThanOrEqual(1);
+    });
   });
 
   describe("US-001-AC02: Each list item displays metadata", () => {
@@ -92,6 +114,8 @@ describe("HomePage", () => {
       expect(
         screen.getByText(/Set GIST_ACCOUNT or GIST_IDS in your Vercel/i)
       ).toBeInTheDocument();
+      // US-001-AC06: fallback shown when GIST_ACCOUNT missing (no error thrown)
+      expect(screen.getByText("?")).toBeInTheDocument();
     });
 
     it("shows empty list when account has no public Gists (no error)", async () => {
@@ -103,6 +127,10 @@ describe("HomePage", () => {
       render(Page);
 
       expect(screen.getByText(/No posts yet/i)).toBeInTheDocument();
+      // Avatar is shown even in empty state (derived from GIST_ACCOUNT)
+      expect(
+        screen.getByRole("img", { name: /avatar for emptyuser/i })
+      ).toBeInTheDocument();
     });
   });
 });

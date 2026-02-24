@@ -54,6 +54,30 @@ body {
   gap: 1rem;
 }
 
+/* ── Author Avatar ───────────────────────────────────────────────── */
+
+.author-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.author-avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5e5e5;
+  color: #666;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.author-avatar__letter {
+  line-height: 1;
+}
+
+/* ── Post Card ──────────────────────────────────────────────────── */
+
 .post-card {
   display: block;
   padding: 1.25rem;
@@ -63,6 +87,21 @@ body {
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.post-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.post-card__avatar {
+  flex-shrink: 0;
+}
+
+.post-card__meta {
+  flex: 1;
+  min-width: 0;
 }
 
 .post-card:hover {
@@ -97,6 +136,10 @@ body {
   text-align: center;
   padding: 3rem;
   color: #666;
+}
+
+.empty-state__avatar {
+  margin-bottom: 1rem;
 }
 
 .empty-state__title {
