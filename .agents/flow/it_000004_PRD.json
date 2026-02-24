@@ -1,0 +1,120 @@
+{
+  "goals": [
+    "Enable admins to create new blog posts (as Gists) from within the application.",
+    "Restrict admin access to authenticated users (via GitHub/Gist).",
+    "Ensure newly created Gists appear on the main page after saving."
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Admin access with Gist authentication",
+      "description": "As an admin, I want to access an administration page that requires Gist authentication so that only authorised users can manage content.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "Unauthenticated users visiting `/admin` (or equivalent) are redirected to GitHub OAuth/Gist login."
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "After successful authentication, the admin reaches an admin dashboard."
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "Unauthenticated requests to admin routes return 401 or redirect to login."
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-001-AC05",
+          "text": "**Visually verified in browser.**"
+        }
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Create posts with Markdown editor",
+      "description": "As an admin, I want to create new Gists through the admin page using a Markdown editor so that I can author posts without leaving the application.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-002-AC01",
+          "text": "Admin can open a \"New post\" form with a Markdown editor (title + body)."
+        },
+        {
+          "id": "US-002-AC02",
+          "text": "Editor supports Markdown syntax (headings, lists, links, code blocks)."
+        },
+        {
+          "id": "US-002-AC03",
+          "text": "Form validates required fields (title, body) before allowing save."
+        },
+        {
+          "id": "US-002-AC04",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-002-AC05",
+          "text": "**Visually verified in browser.**"
+        }
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Save Gist and view created posts",
+      "description": "As an admin, I want to save the post to Gist and see my created posts so that I can confirm the content is stored and visible.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-003-AC01",
+          "text": "\"Save\" button creates a new Gist via the GitHub API using the authenticated user's token."
+        },
+        {
+          "id": "US-003-AC02",
+          "text": "After save, the admin sees success feedback and the new post in a list of their posts."
+        },
+        {
+          "id": "US-003-AC03",
+          "text": "The newly created Gist is visible on the main page (post list) after save."
+        },
+        {
+          "id": "US-003-AC04",
+          "text": "Save failure (network, API error) shows a clear error message."
+        },
+        {
+          "id": "US-003-AC05",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-003-AC06",
+          "text": "**Visually verified in browser.**"
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "Admin routes (`/admin`, `/admin/*`) are protected; unauthenticated users cannot access them."
+    },
+    {
+      "id": "FR-2",
+      "description": "Authentication uses GitHub OAuth (or equivalent) scoped for Gist read/write."
+    },
+    {
+      "id": "FR-3",
+      "description": "Admin dashboard displays a \"New post\" action and a list of posts created by the authenticated user."
+    },
+    {
+      "id": "FR-4",
+      "description": "Markdown editor allows editing title and body; body supports standard Markdown."
+    },
+    {
+      "id": "FR-5",
+      "description": "Gist creation uses the GitHub API with the authenticated user's token; new Gists are associated with the user's account."
+    },
+    {
+      "id": "FR-6",
+      "description": "The main page shows all Gists (no filtering); newly created Gists by the admin appear automatically in the list."
+    }
+  ]
+}
