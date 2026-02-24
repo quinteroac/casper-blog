@@ -3,146 +3,146 @@
     {
       "id": "TC-001-01",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify gistClient fetches metadata from configured Gist ID.",
-      "updated_at": "2026-02-24T02:15:33.986Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.664Z"
     },
     {
       "id": "TC-001-02",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify config resolves GIST_IDS from env.",
-      "updated_at": "2026-02-24T02:15:33.986Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.664Z"
     },
     {
       "id": "TC-001-03",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard displays title and preview/date.",
-      "updated_at": "2026-02-24T02:15:33.986Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.664Z"
     },
     {
       "id": "TC-001-04",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPosts sorts by date descending.",
-      "updated_at": "2026-02-24T02:15:33.986Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-001-05",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard links to /posts/[slug].",
-      "updated_at": "2026-02-24T02:15:33.986Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-001-06",
       "type": "automated",
       "status": "failed",
-      "attempt_count": 2,
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "Typecheck fails due to missing module references in schemas/ directory (agent tooling files, not project source code). Project source files themselves have no type errors. Lint passes (warning only, no errors).",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-01",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPostContent/getPostBySlug.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-02",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostContent markdown rendering.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-03",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostPage displays post title.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-04",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify post title and body from Gist.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-05",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify back link to list.",
-      "updated_at": "2026-02-24T02:15:33.987Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-002-06",
       "type": "automated",
       "status": "failed",
-      "attempt_count": 2,
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify.",
-      "updated_at": "2026-02-24T02:15:33.988Z"
+      "last_error_summary": "Same typecheck failure as TC-001-06. Errors are in schemas/ tooling files, not project source. Project source files have no type errors. Lint passes.",
+      "updated_at": "2026-02-24T02:54:14.665Z"
     },
     {
       "id": "TC-X-01",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify Gist fetch failure handling.",
-      "updated_at": "2026-02-24T02:15:33.988Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.666Z"
     },
     {
       "id": "TC-X-02",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify empty GIST_IDS fallback.",
-      "updated_at": "2026-02-24T02:15:33.988Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.666Z"
     },
     {
       "id": "TC-X-03",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify code blocks render as code element.",
-      "updated_at": "2026-02-24T02:15:33.988Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.666Z"
     },
     {
       "id": "TC-X-04",
       "type": "automated",
-      "status": "failed",
-      "attempt_count": 2,
+      "status": "passed",
+      "attempt_count": 4,
       "last_agent_exit_code": 0,
-      "last_error_summary": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify links render as anchor elements.",
-      "updated_at": "2026-02-24T02:15:33.989Z"
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T02:54:14.666Z"
     },
     {
       "id": "TC-001-07",
