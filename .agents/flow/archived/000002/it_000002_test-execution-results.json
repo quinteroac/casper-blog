@@ -1,0 +1,320 @@
+{
+  "iteration": "000002",
+  "testPlanFile": "it_000002_TP.json",
+  "executedTestIds": [
+    "TC-001-01",
+    "TC-001-02",
+    "TC-001-03",
+    "TC-001-04",
+    "TC-001-05",
+    "TC-001-06",
+    "TC-001-07",
+    "TC-001-08",
+    "TC-001-09",
+    "TC-002-01",
+    "TC-002-02",
+    "TC-002-03",
+    "TC-002-04",
+    "TC-002-05",
+    "TC-001-10",
+    "TC-002-06"
+  ],
+  "results": [
+    {
+      "testCaseId": "TC-001-01",
+      "description": "Env variable `GIST_ACCOUNT` (or equivalent) is read and used when fetching Gists",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-1"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "config/__tests__/gist.test.ts: 4 tests pass verifying GIST_ACCOUNT is read from process.env.GIST_ACCOUNT (with GITHUB_USERNAME fallback). app/__tests__/page.test.tsx: HomePage calls fetchPostsFromAccount(GIST_ACCOUNT) when env is set. config/gist.ts line 7-9: `process.env.GIST_ACCOUNT ?? process.env.GITHUB_USERNAME ?? \"\"`.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-01_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-02",
+      "description": "Gist fetcher calls `GET /users/{username}/gists` with the account from config",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-2"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "lib/__tests__/gistClient.test.ts: 'fetchPublicGistsForUser fetches from users API' test passes — verifies fetch called with 'https://api.github.com/users/octocat/gists'. lib/gistClient.ts line 73-74: `fetch(GITHUB_API_BASE + '/users/' + encodeURIComponent(username) + '/gists', ...)`.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-02_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-03",
+      "description": "Slug derivation converts first filename to slug (e.g. `hello-world.md` → `hello-world`)",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-3"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "lib/__tests__/gistClient.test.ts: multiple tests pass verifying slug derivation — 'hello-world.md' → 'hello-world', 'my-awesome-post.md' → 'my-awesome-post', 'my-post.md' → 'my-post'. lib/gistClient.ts line 37-39: `slugFromFilename` removes .md extension, replaces spaces with hyphens, lowercases.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-03_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-04",
+      "description": "Homepage renders a list of posts with links to `/posts/[slug]`",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-4"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "app/__tests__/page.test.tsx: 'calls fetchPostsFromAccount and renders posts when GIST_ACCOUNT is set' passes — renders post list. components/__tests__/PostCard.test.tsx: 'links to /posts/[slug]' passes — link href is '/posts/my-first-post'. PostCard.tsx line 19: `<Link href={/posts/${post.slug}}>`. Homepage renders <ul class='post-list'> with PostCard items.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-04_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-05",
+      "description": "Account with no public Gists shows empty list, no error",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "lib/__tests__/gistClient.test.ts: 'fetchPostsFromAccount returns empty array when account has no Gists' passes — returns []. app/__tests__/page.test.tsx: 'shows empty list when account has no public Gists (no error)' passes — renders 'No posts yet' message without errors.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-05_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-06",
+      "description": "Each list item includes post metadata (title/filename, date if available)",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "failed",
+        "evidence": "components/__tests__/PostCard.test.tsx: 4/4 tests pass (renders title, formatted date, preview). However app/__tests__/page.test.tsx: 'shows title and date for each post' FAILS — test expects 'Jan 15, 2025' but component renders 'Jan 14, 2025' due to timezone offset in toLocaleDateString for '2025-01-15T00:00:00Z' in test environment. PostCard component correctly renders metadata but page-level integration test fails.",
+        "notes": "Test failure caused by timezone-sensitive date formatting: toLocaleDateString converts UTC midnight to local date which can shift by -1 day. The PostCard component itself renders metadata correctly (title, date, preview) as proven by PostCard unit tests."
+      },
+      "passFail": "fail",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-06_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-07",
+      "description": "Gist list is fetched server-side (not client-side)",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "app/page.tsx: HomePage is an async server component (no 'use client' directive). No 'use client' directive found in any file under app/, lib/, components/, or config/. Data fetching (fetchPostsFromAccount/fetchPosts) happens inside the async server component function body. Next.js App Router renders this server-side by default.",
+        "notes": "Verified via code inspection: grep for 'use client' across all source files returned zero matches. PostContent uses react-markdown but is also a server component."
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-07_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-08",
+      "description": "Typecheck and lint pass for Gist list feature",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "Lint: 'bun run lint' → '✔ No ESLint warnings or errors'. Typecheck: 'bun run typecheck' → only 2 errors in schemas/validate-progress.ts and schemas/validate-state.ts (agent tooling files, not Gist list feature code). All feature code in app/, lib/, components/, config/ typechecks cleanly.",
+        "notes": "The 2 typecheck errors are in schemas/ directory (agent workflow tooling) and are unrelated to the Gist list feature. The application code has zero type errors."
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-08_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-09",
+      "description": "No Gist ID env variable required; account-based fetch used",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-6"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "config/gist.ts: exports GIST_ACCOUNT (from env) and GIST_IDS (fallback). app/page.tsx line 9-13: HomePage checks GIST_ACCOUNT first, uses fetchPostsFromAccount (account-based fetch), only falls back to fetchPosts(GIST_IDS) when GIST_ACCOUNT is empty. No individual Gist ID env variable is required. config/__tests__/gist.test.ts: 'returns empty array when GIST_IDS is unset' passes.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-09_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-01",
+      "description": "Post page fetches Gist content for slug and renders as Markdown",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-5"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "failed",
+        "evidence": "app/posts/[slug]/__tests__/page.test.tsx: 'renders post when slug maps to a Gist' FAILS — test uses screen.getByRole('heading', {level:1}) but finds 2 h1 elements: the post title <h1 class='post-title'>Hello World</h1> and a markdown-rendered <h1>Hello World</h1> from content '# Hello World\\n\\nContent here.'. TestingLibraryElementError: 'Found multiple elements with the role heading'. The feature works correctly (content IS fetched and rendered as Markdown), but the test selector is ambiguous.",
+        "notes": "The post page correctly fetches Gist content by slug and renders it as Markdown via PostContent. The test failure is due to an ambiguous getByRole query — both the page title h1 and the markdown content h1 match. The 'renders a back link' and markdown rendering tests in other suites pass, confirming the feature works."
+      },
+      "passFail": "fail",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-01_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-02",
+      "description": "Slug correctly maps to Gist file (filename without extension → slug)",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-3"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "lib/__tests__/gistClient.test.ts: 'getPostBySlug returns post with content when slug matches' passes — slug 'hello-world' maps to file 'hello-world.md' and returns content. 'Post slug is used to build /posts/[slug] path' passes — 'my-awesome-post.md' → slug 'my-awesome-post'. slugFromFilename (line 37-39) strips .md extension, replaces spaces with hyphens, lowercases.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-02_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-03",
+      "description": "Unknown or invalid slug returns 404",
+      "correlatedRequirements": [
+        "US-002"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "app/posts/[slug]/__tests__/page.test.tsx: 'calls notFound() when slug does not match any post' passes — getPostBySlug returns null, notFound() is called, throws NEXT_NOT_FOUND. lib/__tests__/gistClient.test.ts: 'getPostBySlug returns null when slug does not match any post' passes. app/posts/[slug]/page.tsx line 22-24: `if (!post) { notFound(); }`.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-03_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-04",
+      "description": "Homepage links to `/posts/[slug]` resolve to correct post content",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-4"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "components/__tests__/PostCard.test.tsx: 'links to /posts/[slug]' passes — PostCard renders <Link href='/posts/my-first-post'>. lib/__tests__/gistClient.test.ts: 'getPostBySlug returns post with content when slug matches' passes — slug correctly resolves to Gist content. End-to-end path: PostCard links to /posts/[slug] → PostPage receives slug → getPostBySlug fetches correct content.",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-04_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-05",
+      "description": "Typecheck and lint pass for post detail feature",
+      "correlatedRequirements": [
+        "US-002"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "passed",
+        "evidence": "Lint: 'bun run lint' → '✔ No ESLint warnings or errors'. Typecheck: 'bun run typecheck' → only 2 errors in schemas/ directory (agent tooling), zero errors in app/posts/[slug]/page.tsx, lib/gistClient.ts, components/PostContent.tsx, or any post detail feature code.",
+        "notes": "The 2 typecheck errors are in schemas/ directory (agent workflow tooling) and are unrelated to the post detail feature."
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-05_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-10",
+      "description": "Visual layout and spacing of post list look correct",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "exploratory_manual",
+      "payload": {
+        "status": "passed",
+        "evidence": "is taking the list of posts correctly",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-001-10_attempt_001.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-06",
+      "description": "Visual rendering of Markdown (headings, code blocks, links) looks correct",
+      "correlatedRequirements": [
+        "US-002"
+      ],
+      "mode": "exploratory_manual",
+      "payload": {
+        "status": "passed",
+        "evidence": "looks correct",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000002_test-execution-artifacts/TC-002-06_attempt_001.json"
+      ]
+    }
+  ]
+}

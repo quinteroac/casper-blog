@@ -7,13 +7,13 @@ describe("PostContent", () => {
     it("renders headings as HTML heading elements", () => {
       const markdown = "# Main Title\n\n## Subtitle\n\n### Section";
       render(<PostContent content={markdown} />);
-      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
         "Main Title"
       );
-      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+      expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
         "Subtitle"
       );
-      expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent(
+      expect(screen.getByRole("heading", { level: 4 })).toHaveTextContent(
         "Section"
       );
     });

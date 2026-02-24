@@ -1,0 +1,89 @@
+{
+  "goals": [
+    "Enable one-click deployment of the blog to Vercel from the GitHub repository",
+    "Allow environment variables (e.g. Gist ID) to be configured in the Vercel dashboard",
+    "Trigger automatic deployments on every push to the main branch",
+    "Ensure the project builds and deploys without errors"
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Connect repository to Vercel",
+      "description": "As a developer, I want to connect the GitHub repository to a Vercel project so that the blog can be deployed from the cloud.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "Developer can import the repo via Vercel dashboard or CLI"
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "First deployment runs successfully (build completes without errors)"
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "Deployment produces a live URL (production or preview)"
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "Typecheck / lint passes"
+        }
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Configure environment variables",
+      "description": "As a developer, I want to set environment variables (e.g. Gist ID) in the Vercel dashboard so that the deployed site fetches the correct content.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-002-AC01",
+          "text": "Environment variables configured in Vercel are available at build and runtime"
+        },
+        {
+          "id": "US-002-AC02",
+          "text": "Deployed site displays posts correctly when Gist ID is set"
+        },
+        {
+          "id": "US-002-AC03",
+          "text": "Typecheck / lint passes"
+        },
+        {
+          "id": "US-002-AC04",
+          "text": "Visually verified in browser at the deployment URL"
+        }
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Automatic deployment on push",
+      "description": "As a developer, I want each push to the main branch to trigger a new deployment so that changes go live without manual steps.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-003-AC01",
+          "text": "Push to main triggers a new Vercel deployment"
+        },
+        {
+          "id": "US-003-AC02",
+          "text": "Build completes successfully and deployment is live"
+        },
+        {
+          "id": "US-003-AC03",
+          "text": "Typecheck / lint passes"
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "The Next.js project must be compatible with Vercel’s build and runtime (no blocking config)."
+    },
+    {
+      "id": "FR-2",
+      "description": "All required environment variables must be documented for Vercel setup."
+    },
+    {
+      "id": "FR-3",
+      "description": "Build output must succeed with `next build` in a Vercel-like environment."
+    }
+  ]
+}

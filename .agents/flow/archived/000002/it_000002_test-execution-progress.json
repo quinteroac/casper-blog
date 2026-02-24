@@ -1,0 +1,148 @@
+{
+  "entries": [
+    {
+      "id": "TC-001-01",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.866Z"
+    },
+    {
+      "id": "TC-001-02",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.866Z"
+    },
+    {
+      "id": "TC-001-03",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.866Z"
+    },
+    {
+      "id": "TC-001-04",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.866Z"
+    },
+    {
+      "id": "TC-001-05",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-001-06",
+      "type": "automated",
+      "status": "failed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "Test failure caused by timezone-sensitive date formatting: toLocaleDateString converts UTC midnight to local date which can shift by -1 day. The PostCard component itself renders metadata correctly (title, date, preview) as proven by PostCard unit tests.",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-001-07",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-001-08",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-001-09",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-002-01",
+      "type": "automated",
+      "status": "failed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "The post page correctly fetches Gist content by slug and renders it as Markdown via PostContent. The test failure is due to an ambiguous getByRole query — both the page title h1 and the markdown content h1 match. The 'renders a back link' and markdown rendering tests in other suites pass, confirming the feature works.",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-002-02",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-002-03",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-002-04",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-002-05",
+      "type": "automated",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": 0,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:19:45.867Z"
+    },
+    {
+      "id": "TC-001-10",
+      "type": "exploratory_manual",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": null,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:21:12.977Z"
+    },
+    {
+      "id": "TC-002-06",
+      "type": "exploratory_manual",
+      "status": "passed",
+      "attempt_count": 1,
+      "last_agent_exit_code": null,
+      "last_error_summary": "",
+      "updated_at": "2026-02-24T04:21:31.396Z"
+    }
+  ]
+}

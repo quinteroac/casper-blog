@@ -1,0 +1,158 @@
+{
+  "overallStatus": "pending",
+  "scope": [
+    "Gist account-based post listing: fetching public Gists from a configured GitHub account.",
+    "Slug-based post URLs and routing: mapping filenames to slugs (e.g. `hello-world.md` → `hello-world`).",
+    "Post list and post detail rendering: homepage list with links and post detail Markdown rendering.",
+    "Environment configuration: single `GIST_ACCOUNT` variable; removal/deprecation of Gist ID configuration.",
+    "Error and edge cases: empty account, unknown slug (404), typecheck/lint."
+  ],
+  "environmentData": [
+    "**Runtime:** Bun.",
+    "**Test runner:** Vitest.",
+    "**Environment:** `GIST_ACCOUNT` (or equivalent) must be configurable for tests; use a test account or mocked API.",
+    "**API:** GitHub Gists API; tests should mock `GET /users/{username}/gists` and Gist file fetch to avoid network dependency.",
+    "**Fixtures:** Mock Gist response payloads for list and file content; empty list for no-Gists scenario.",
+    "## User Story: US-001 - List posts from Gist account"
+  ],
+  "automatedTests": [
+    {
+      "id": "TC-001-01",
+      "description": "Env variable `GIST_ACCOUNT` (or equivalent) is read and used when fetching Gists",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-1"
+      ]
+    },
+    {
+      "id": "TC-001-02",
+      "description": "Gist fetcher calls `GET /users/{username}/gists` with the account from config",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-2"
+      ]
+    },
+    {
+      "id": "TC-001-03",
+      "description": "Slug derivation converts first filename to slug (e.g. `hello-world.md` → `hello-world`)",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-3"
+      ]
+    },
+    {
+      "id": "TC-001-04",
+      "description": "Homepage renders a list of posts with links to `/posts/[slug]`",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-4"
+      ]
+    },
+    {
+      "id": "TC-001-05",
+      "description": "Account with no public Gists shows empty list, no error",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-06",
+      "description": "Each list item includes post metadata (title/filename, date if available)",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-07",
+      "description": "Gist list is fetched server-side (not client-side)",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-08",
+      "description": "Typecheck and lint pass for Gist list feature",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-09",
+      "description": "No Gist ID env variable required; account-based fetch used",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-6"
+      ]
+    },
+    {
+      "id": "TC-002-01",
+      "description": "Post page fetches Gist content for slug and renders as Markdown",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-5"
+      ]
+    },
+    {
+      "id": "TC-002-02",
+      "description": "Slug correctly maps to Gist file (filename without extension → slug)",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-3"
+      ]
+    },
+    {
+      "id": "TC-002-03",
+      "description": "Unknown or invalid slug returns 404",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002"
+      ]
+    },
+    {
+      "id": "TC-002-04",
+      "description": "Homepage links to `/posts/[slug]` resolve to correct post content",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-4"
+      ]
+    },
+    {
+      "id": "TC-002-05",
+      "description": "Typecheck and lint pass for post detail feature",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002"
+      ]
+    }
+  ],
+  "exploratoryManualTests": [
+    {
+      "id": "TC-001-10",
+      "description": "Visual layout and spacing of post list look correct",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-002-06",
+      "description": "Visual rendering of Markdown (headings, code blocks, links) looks correct",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002"
+      ]
+    }
+  ]
+}
