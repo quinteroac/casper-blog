@@ -13,6 +13,33 @@ describe("gistClient", () => {
   });
 
   describe("US-001-AC01: Posts are fetched from configured Gist", () => {
+    it("TC-001-01: Gist client fetches metadata from configured Gist ID", async () => {
+      const mockGist = {
+        id: "configured-gist-id",
+        files: {
+          "my-post.md": {
+            filename: "my-post.md",
+            type: "text/markdown",
+            content: "# My Post\n\nHello world.",
+          },
+        },
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-02-01T00:00:00Z",
+      };
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGist,
+      } as Response);
+
+      const posts = await fetchPosts(["configured-gist-id"]);
+      expect(posts).toHaveLength(1);
+      expect(posts[0].slug).toBe("my-post");
+      expect(posts[0].title).toBe("my post");
+      expect(posts[0].date).toBe("2025-02-01T00:00:00Z");
+      expect(posts[0].gistId).toBe("configured-gist-id");
+    });
+
     it("fetchGist returns gist data when API succeeds", async () => {
       const mockGist = {
         id: "abc123",

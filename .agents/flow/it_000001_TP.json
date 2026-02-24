@@ -1,0 +1,169 @@
+{
+  "overallStatus": "pending",
+  "scope": [
+    "Post list page (`/`) and post detail page (`/posts/[slug]`) behaviour.",
+    "Gist API client: fetch metadata and file content.",
+    "Markdown rendering: conversion of post content to HTML.",
+    "Configuration: Gist ID(s) from env/config and post source resolution.",
+    "Navigation: list item click → post view; back link → list."
+  ],
+  "environmentData": [
+    "**Runtime:** Bun.",
+    "**Test runner:** Vitest (unit and integration).",
+    "**Build:** `bun run build` must succeed before running tests.",
+    "**Environment variables:** `GIST_ID` or equivalent config for Gist source (mocked in tests).",
+    "**Fixtures:** Sample Gist metadata and Markdown content for deterministic unit/integration tests.",
+    "---",
+    "## User Story: US-001 - View List of Posts"
+  ],
+  "automatedTests": [
+    {
+      "id": "TC-001-01",
+      "description": "Gist client fetches metadata from configured Gist ID",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-1",
+        "FR-4"
+      ]
+    },
+    {
+      "id": "TC-001-02",
+      "description": "Config resolves Gist ID from env/config",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-4"
+      ]
+    },
+    {
+      "id": "TC-001-03",
+      "description": "Post list component displays title and preview/date for each post",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-5"
+      ]
+    },
+    {
+      "id": "TC-001-04",
+      "description": "Post list is ordered by date (newest first)",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-05",
+      "description": "Post list link navigates to `/posts/[slug]`",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-001"
+      ]
+    },
+    {
+      "id": "TC-001-06",
+      "description": "Typecheck and lint pass",
+      "status": "pending",
+      "correlatedRequirements": []
+    },
+    {
+      "id": "TC-002-01",
+      "description": "Gist client fetches file content by slug",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-1"
+      ]
+    },
+    {
+      "id": "TC-002-02",
+      "description": "Markdown renderer converts content to HTML",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-2",
+        "FR-3"
+      ]
+    },
+    {
+      "id": "TC-002-03",
+      "description": "Post detail page displays post title",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-5"
+      ]
+    },
+    {
+      "id": "TC-002-04",
+      "description": "Post has title and body derived from Gist",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-2",
+        "FR-5"
+      ]
+    },
+    {
+      "id": "TC-002-05",
+      "description": "Back link or navigation returns to list",
+      "status": "pending",
+      "correlatedRequirements": [
+        "US-002"
+      ]
+    },
+    {
+      "id": "TC-002-06",
+      "description": "Typecheck and lint pass",
+      "status": "pending",
+      "correlatedRequirements": []
+    },
+    {
+      "id": "TC-X-01",
+      "description": "Gist fetch failure shows explicit error state",
+      "status": "pending",
+      "correlatedRequirements": [
+        "FR-1"
+      ]
+    },
+    {
+      "id": "TC-X-02",
+      "description": "Invalid or missing Gist ID yields graceful fallback",
+      "status": "pending",
+      "correlatedRequirements": [
+        "FR-4"
+      ]
+    },
+    {
+      "id": "TC-X-03",
+      "description": "Markdown with code blocks renders code element",
+      "status": "pending",
+      "correlatedRequirements": [
+        "FR-3"
+      ]
+    },
+    {
+      "id": "TC-X-04",
+      "description": "Markdown with links renders anchor elements",
+      "status": "pending",
+      "correlatedRequirements": [
+        "FR-3"
+      ]
+    }
+  ],
+  "exploratoryManualTests": [
+    {
+      "id": "TC-001-07",
+      "description": "Post list page renders correctly in browser",
+      "status": "pending",
+      "correlatedRequirements": []
+    },
+    {
+      "id": "TC-002-07",
+      "description": "Full post page renders correctly in browser",
+      "status": "pending",
+      "correlatedRequirements": []
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ISSUE-000001-001",
+    "title": "[skipped] TC-001-01: Gist client fetches metadata from configured Gist ID",
+    "description": "Test case TC-001-01 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify gistClient fetches metadata from configured Gist ID.\nCorrelated requirements: US-001, FR-1, FR-4",
+    "status": "fixed"
+  },
+  {
+    "id": "ISSUE-000001-002",
+    "title": "[skipped] TC-001-02: Config resolves Gist ID from env/config",
+    "description": "Test case TC-001-02 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify config resolves GIST_IDS from env.\nCorrelated requirements: US-001, FR-4",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-003",
+    "title": "[skipped] TC-001-03: Post list component displays title and preview/date for each post",
+    "description": "Test case TC-001-03 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard displays title and preview/date.\nCorrelated requirements: US-001, FR-5",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-004",
+    "title": "[skipped] TC-001-04: Post list is ordered by date (newest first)",
+    "description": "Test case TC-001-04 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPosts sorts by date descending.\nCorrelated requirements: US-001",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-005",
+    "title": "[skipped] TC-001-05: Post list link navigates to `/posts/[slug]`",
+    "description": "Test case TC-001-05 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard links to /posts/[slug].\nCorrelated requirements: US-001",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-006",
+    "title": "[skipped] TC-001-06: Typecheck and lint pass",
+    "description": "Test case TC-001-06 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify.",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-007",
+    "title": "[skipped] TC-002-01: Gist client fetches file content by slug",
+    "description": "Test case TC-002-01 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPostContent/getPostBySlug.\nCorrelated requirements: US-002, FR-1",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-008",
+    "title": "[skipped] TC-002-02: Markdown renderer converts content to HTML",
+    "description": "Test case TC-002-02 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostContent markdown rendering.\nCorrelated requirements: US-002, FR-2, FR-3",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-009",
+    "title": "[skipped] TC-002-03: Post detail page displays post title",
+    "description": "Test case TC-002-03 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostPage displays post title.\nCorrelated requirements: US-002, FR-5",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-010",
+    "title": "[skipped] TC-002-04: Post has title and body derived from Gist",
+    "description": "Test case TC-002-04 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify post title and body from Gist.\nCorrelated requirements: US-002, FR-2, FR-5",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-011",
+    "title": "[skipped] TC-002-05: Back link or navigation returns to list",
+    "description": "Test case TC-002-05 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify back link to list.\nCorrelated requirements: US-002",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-012",
+    "title": "[skipped] TC-002-06: Typecheck and lint pass",
+    "description": "Test case TC-002-06 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify.",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-013",
+    "title": "[skipped] TC-X-01: Gist fetch failure shows explicit error state",
+    "description": "Test case TC-X-01 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify Gist fetch failure handling.\nCorrelated requirements: FR-1",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-014",
+    "title": "[skipped] TC-X-02: Invalid or missing Gist ID yields graceful fallback",
+    "description": "Test case TC-X-02 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify empty GIST_IDS fallback.\nCorrelated requirements: FR-4",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-015",
+    "title": "[skipped] TC-X-03: Markdown with code blocks renders code element",
+    "description": "Test case TC-X-03 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify code blocks render as code element.\nCorrelated requirements: FR-3",
+    "status": "open"
+  },
+  {
+    "id": "ISSUE-000001-016",
+    "title": "[skipped] TC-X-04: Markdown with links renders anchor elements",
+    "description": "Test case TC-X-04 resulted in status: skipped.\nNotes: Test execution commands rejected in agent environment. Run 'bun run test' manually to verify links render as anchor elements.\nCorrelated requirements: FR-3",
+    "status": "open"
+  }
+]

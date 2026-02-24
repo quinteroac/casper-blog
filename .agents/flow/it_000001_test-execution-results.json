@@ -1,0 +1,352 @@
+{
+  "iteration": "000001",
+  "testPlanFile": "it_000001_TP.json",
+  "executedTestIds": [
+    "TC-001-01",
+    "TC-001-02",
+    "TC-001-03",
+    "TC-001-04",
+    "TC-001-05",
+    "TC-001-06",
+    "TC-002-01",
+    "TC-002-02",
+    "TC-002-03",
+    "TC-002-04",
+    "TC-002-05",
+    "TC-002-06",
+    "TC-X-01",
+    "TC-X-02",
+    "TC-X-03",
+    "TC-X-04",
+    "TC-001-07",
+    "TC-002-07"
+  ],
+  "results": [
+    {
+      "testCaseId": "TC-001-01",
+      "description": "Gist client fetches metadata from configured Gist ID",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-1",
+        "FR-4"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify gistClient fetches metadata from configured Gist ID."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-01_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-02",
+      "description": "Config resolves Gist ID from env/config",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-4"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify config resolves GIST_IDS from env."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-02_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-03",
+      "description": "Post list component displays title and preview/date for each post",
+      "correlatedRequirements": [
+        "US-001",
+        "FR-5"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard displays title and preview/date."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-03_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-04",
+      "description": "Post list is ordered by date (newest first)",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPosts sorts by date descending."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-04_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-05",
+      "description": "Post list link navigates to `/posts/[slug]`",
+      "correlatedRequirements": [
+        "US-001"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard links to /posts/[slug]."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-05_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-06",
+      "description": "Typecheck and lint pass",
+      "correlatedRequirements": [],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-06_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-01",
+      "description": "Gist client fetches file content by slug",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-1"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPostContent/getPostBySlug."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-01_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-02",
+      "description": "Markdown renderer converts content to HTML",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-2",
+        "FR-3"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostContent markdown rendering."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-02_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-03",
+      "description": "Post detail page displays post title",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-5"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostPage displays post title."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-03_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-04",
+      "description": "Post has title and body derived from Gist",
+      "correlatedRequirements": [
+        "US-002",
+        "FR-2",
+        "FR-5"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify post title and body from Gist."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-04_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-05",
+      "description": "Back link or navigation returns to list",
+      "correlatedRequirements": [
+        "US-002"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify back link to list."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-05_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-06",
+      "description": "Typecheck and lint pass",
+      "correlatedRequirements": [],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-06_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-X-01",
+      "description": "Gist fetch failure shows explicit error state",
+      "correlatedRequirements": [
+        "FR-1"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify Gist fetch failure handling."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-X-01_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-X-02",
+      "description": "Invalid or missing Gist ID yields graceful fallback",
+      "correlatedRequirements": [
+        "FR-4"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify empty GIST_IDS fallback."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-X-02_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-X-03",
+      "description": "Markdown with code blocks renders code element",
+      "correlatedRequirements": [
+        "FR-3"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify code blocks render as code element."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-X-03_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-X-04",
+      "description": "Markdown with links renders anchor elements",
+      "correlatedRequirements": [
+        "FR-3"
+      ],
+      "mode": "automated",
+      "payload": {
+        "status": "skipped",
+        "evidence": "",
+        "notes": "Test execution commands rejected in agent environment. Run 'bun run test' manually to verify links render as anchor elements."
+      },
+      "passFail": null,
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-X-04_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-001-07",
+      "description": "Post list page renders correctly in browser",
+      "correlatedRequirements": [],
+      "mode": "exploratory_manual",
+      "payload": {
+        "status": "passed",
+        "evidence": "posts lists page renders fine",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-001-07_attempt_002.json"
+      ]
+    },
+    {
+      "testCaseId": "TC-002-07",
+      "description": "Full post page renders correctly in browser",
+      "correlatedRequirements": [],
+      "mode": "exploratory_manual",
+      "payload": {
+        "status": "passed",
+        "evidence": "full post can be observed",
+        "notes": ""
+      },
+      "passFail": "pass",
+      "agentExitCode": 0,
+      "artifactReferences": [
+        ".agents/flow/it_000001_test-execution-artifacts/TC-002-07_attempt_002.json"
+      ]
+    }
+  ]
+}

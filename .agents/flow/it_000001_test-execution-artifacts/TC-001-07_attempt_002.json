@@ -1,0 +1,13 @@
+{
+  "testCaseId": "TC-001-07",
+  "attemptNumber": 2,
+  "prompt": "manual-user-input",
+  "agentExitCode": 0,
+  "stdout": "{\"status\":\"passed\",\"evidence\":\"posts lists page renders fine\",\"notes\":\"\"}",
+  "stderr": "",
+  "payload": {
+    "status": "passed",
+    "evidence": "posts lists page renders fine",
+    "notes": ""
+  }
+}

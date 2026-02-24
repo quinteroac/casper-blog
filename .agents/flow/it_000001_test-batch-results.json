@@ -1,0 +1,18 @@
+[
+  {"testCaseId":"TC-001-01","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify gistClient fetches metadata from configured Gist ID."},
+  {"testCaseId":"TC-001-02","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify config resolves GIST_IDS from env."},
+  {"testCaseId":"TC-001-03","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard displays title and preview/date."},
+  {"testCaseId":"TC-001-04","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPosts sorts by date descending."},
+  {"testCaseId":"TC-001-05","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostCard links to /posts/[slug]."},
+  {"testCaseId":"TC-001-06","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify."},
+  {"testCaseId":"TC-002-01","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify fetchPostContent/getPostBySlug."},
+  {"testCaseId":"TC-002-02","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostContent markdown rendering."},
+  {"testCaseId":"TC-002-03","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify PostPage displays post title."},
+  {"testCaseId":"TC-002-04","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify post title and body from Gist."},
+  {"testCaseId":"TC-002-05","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify back link to list."},
+  {"testCaseId":"TC-002-06","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run typecheck' and 'bun run lint' manually to verify."},
+  {"testCaseId":"TC-X-01","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify Gist fetch failure handling."},
+  {"testCaseId":"TC-X-02","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify empty GIST_IDS fallback."},
+  {"testCaseId":"TC-X-03","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify code blocks render as code element."},
+  {"testCaseId":"TC-X-04","status":"skipped","evidence":"","notes":"Test execution commands rejected in agent environment. Run 'bun run test' manually to verify links render as anchor elements."}
+]
