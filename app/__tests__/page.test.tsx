@@ -17,6 +17,11 @@ vi.mock("@/config/gist", () => ({
   },
 }));
 
+vi.mock("@/config/env", () => ({
+  isGistSourceConfigured: () =>
+    testConfig.GIST_ACCOUNT.length > 0 || testConfig.GIST_IDS.length > 0,
+}));
+
 const { fetchPosts, fetchPostsFromAccount } = await import("@/lib/gistClient");
 
 describe("HomePage", () => {
@@ -85,7 +90,7 @@ describe("HomePage", () => {
 
       expect(screen.getByText(/No posts yet/i)).toBeInTheDocument();
       expect(
-        screen.getByText(/Configure GIST_ACCOUNT or GITHUB_USERNAME/i)
+        screen.getByText(/Set GIST_ACCOUNT or GIST_IDS in your Vercel/i)
       ).toBeInTheDocument();
     });
 

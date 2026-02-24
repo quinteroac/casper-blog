@@ -4,8 +4,10 @@ import {
 } from "@/lib/gistClient";
 import { PostCard } from "@/components/PostCard";
 import { GIST_ACCOUNT, GIST_IDS } from "@/config/gist";
+import { isGistSourceConfigured } from "@/config/env";
 
 export default async function HomePage() {
+  const configured = isGistSourceConfigured();
   const posts = GIST_ACCOUNT
     ? await fetchPostsFromAccount(GIST_ACCOUNT)
     : GIST_IDS.length > 0
@@ -27,8 +29,9 @@ export default async function HomePage() {
         <div className="empty-state">
           <h3 className="empty-state__title">No posts yet</h3>
           <p className="empty-state__text">
-            Configure GIST_ACCOUNT or GITHUB_USERNAME in your environment to load
-            posts from your GitHub Gists.
+            {configured
+              ? "No Gist posts found for the configured account."
+              : "Set GIST_ACCOUNT or GIST_IDS in your Vercel environment variables to display posts."}
           </p>
         </div>
       )}
