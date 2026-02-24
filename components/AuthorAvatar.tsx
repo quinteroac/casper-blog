@@ -32,7 +32,6 @@ export function AuthorAvatar({
       <div
         className={`author-avatar author-avatar--fallback ${className}`.trim()}
         style={{ width: size, height: size }}
-        role="img"
         aria-label={account ? `Avatar for ${account}` : "Author avatar"}
       >
         <span className="author-avatar__letter">{fallbackLetter}</span>
