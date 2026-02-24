@@ -68,4 +68,26 @@ describe("PostContent", () => {
       expect(screen.getByText("Second paragraph.")).toBeInTheDocument();
     });
   });
+
+  describe("US-002-AC04: Markdown is sanitized before display", () => {
+    it("strips script tags to prevent raw HTML injection", () => {
+      const markdown =
+        "Safe content\n\n<script>alert('xss')</script>\n\nMore text";
+      const { container } = render(<PostContent content={markdown} />);
+      const scripts = container.querySelectorAll("script");
+      expect(scripts.length).toBe(0);
+      expect(screen.getByText("Safe content")).toBeInTheDocument();
+      expect(screen.getByText("More text")).toBeInTheDocument();
+    });
+
+    it("strips dangerous elements like iframe", () => {
+      const markdown =
+        "Hello\n\n<iframe src=\"https://evil.com\"></iframe>\n\nWorld";
+      const { container } = render(<PostContent content={markdown} />);
+      const iframes = container.querySelectorAll("iframe");
+      expect(iframes.length).toBe(0);
+      expect(screen.getByText("Hello")).toBeInTheDocument();
+      expect(screen.getByText("World")).toBeInTheDocument();
+    });
+  });
 });

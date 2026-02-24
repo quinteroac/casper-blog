@@ -137,6 +137,18 @@ describe("HomePage", () => {
       expect(screen.getByText("My Post")).toBeInTheDocument();
     });
 
+    it("US-002-AC01: uses username from GIST_ACCOUNT config for About Me fetch (no hardcoded username)", async () => {
+      testConfig.GIST_ACCOUNT = "my-github-user";
+      testConfig.GIST_IDS = [];
+      vi.mocked(fetchAboutMeContent).mockResolvedValueOnce(null);
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(fetchAboutMeContent).toHaveBeenCalledWith("my-github-user");
+    });
+
     it("US-001-AC03: omits About Me section when no content — page does not break", async () => {
       testConfig.GIST_ACCOUNT = "octocat";
       vi.mocked(fetchAboutMeContent).mockResolvedValueOnce(null);

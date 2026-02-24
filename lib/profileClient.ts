@@ -4,6 +4,8 @@
  * for the About Me section.
  */
 
+const RAW_README_URL =
+  "https://raw.githubusercontent.com/{username}/{username}/HEAD/README.md";
 const GITHUB_API_BASE = "https://api.github.com";
 
 export interface ProfileFields {
@@ -20,11 +22,6 @@ export type AboutMeContent =
   | { type: "profile"; fields: ProfileFields }
   | null;
 
-interface ReadmeResponse {
-  content?: string;
-  encoding?: string;
-}
-
 interface UserResponse {
   avatar_url?: string;
   name?: string | null;
@@ -36,24 +33,22 @@ interface UserResponse {
 
 /**
  * Fetches the profile README from the username/username repo.
- * Returns markdown string or null if not found or empty.
+ * Uses raw.githubusercontent.com to retrieve README.md directly.
+ * Returns markdown string or null if not found (non-200) or empty.
  */
 export async function fetchProfileReadme(
   username: string
 ): Promise<string | null> {
   try {
-    const res = await fetch(
-      `${GITHUB_API_BASE}/repos/${encodeURIComponent(username)}/${encodeURIComponent(username)}/readme`,
-      {
-        headers: { Accept: "application/vnd.github+json" },
-        next: { revalidate: 60 },
-      }
-    );
+    const url = RAW_README_URL.replace(/{username}/g, encodeURIComponent(username));
+    const res = await fetch(url, {
+      headers: { Accept: "text/plain" },
+      next: { revalidate: 60 },
+    });
     if (!res.ok) return null;
-    const data = (await res.json()) as ReadmeResponse;
-    if (!data.content || data.encoding !== "base64") return null;
-    const decoded = Buffer.from(data.content, "base64").toString("utf-8");
-    return decoded.trim().length > 0 ? decoded : null;
+    const text = await res.text();
+    const trimmed = text.trim();
+    return trimmed.length > 0 ? trimmed : null;
   } catch {
     return null;
   }

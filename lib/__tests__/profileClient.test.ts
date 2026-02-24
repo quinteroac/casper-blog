@@ -11,21 +11,32 @@ describe("profileClient", () => {
   });
 
   describe("fetchProfileReadme", () => {
-    it("returns markdown when profile README exists", async () => {
-      const content = Buffer.from("# Hi, I'm octocat\n\nWelcome to my blog.").toString(
-        "base64"
-      );
+    it("US-002-AC02: fetches raw README from raw.githubusercontent.com", async () => {
+      const markdown = "# Hi, I'm octocat\n\nWelcome to my blog.";
       vi.spyOn(global, "fetch").mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ content, encoding: "base64" }),
+        text: async () => markdown,
       } as Response);
 
       const result = await fetchProfileReadme("octocat");
-      expect(result).toBe("# Hi, I'm octocat\n\nWelcome to my blog.");
+      expect(result).toBe(markdown);
       expect(fetch).toHaveBeenCalledWith(
-        "https://api.github.com/repos/octocat/octocat/readme",
-        expect.any(Object)
+        "https://raw.githubusercontent.com/octocat/octocat/HEAD/README.md",
+        expect.objectContaining({
+          headers: { Accept: "text/plain" },
+        })
       );
+    });
+
+    it("US-002-AC03: returns markdown when README exists (HTTP 200)", async () => {
+      const markdown = "# About Me\n\nHello world.";
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        text: async () => markdown,
+      } as Response);
+
+      const result = await fetchProfileReadme("octocat");
+      expect(result).toBe("# About Me\n\nHello world.");
     });
 
     it("returns null when repo does not exist (404)", async () => {
@@ -40,10 +51,7 @@ describe("profileClient", () => {
     it("returns null when content is empty", async () => {
       vi.spyOn(global, "fetch").mockResolvedValueOnce({
         ok: true,
-        json: async () => ({
-          content: Buffer.from("   ").toString("base64"),
-          encoding: "base64",
-        }),
+        text: async () => "   ",
       } as Response);
 
       const result = await fetchProfileReadme("octocat");
@@ -117,12 +125,11 @@ describe("profileClient", () => {
 
   describe("fetchAboutMeContent", () => {
     it("US-001-AC02: returns readme content when profile README exists", async () => {
-      const content = Buffer.from("# About Me\n\nHello world.").toString("base64");
-      vi.spyOn(global, "fetch")
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({ content, encoding: "base64" }),
-        } as Response);
+      const markdown = "# About Me\n\nHello world.";
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        text: async () => markdown,
+      } as Response);
 
       const result = await fetchAboutMeContent("octocat");
       expect(result).toEqual({ type: "readme", markdown: "# About Me\n\nHello world." });
