@@ -11,23 +11,30 @@ out/
 dist/
 build/
 
+# TypeScript build info
+tsconfig.tsbuildinfo
+
 # Environment
 .env
 .env.local
 .env.*.local
+.env*.local
 
 # Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE
+# IDE / AI tools
 .idea/
 .vscode/
+.claude/
 *.swp
 *.swo
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Vercel
 .vercel
