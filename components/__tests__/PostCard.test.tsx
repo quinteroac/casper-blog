@@ -1,3 +1,4 @@
+import React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { PostCard } from "../PostCard";
@@ -16,19 +17,19 @@ describe("PostCard", () => {
   describe("US-001-AC02: Each list item shows title and preview or date", () => {
     it("renders post title", () => {
       render(<PostCard post={post} />);
-      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
+      expect(screen.getByRole("heading", { level: 2 }).textContent).toBe(
         "My First Post"
       );
     });
 
     it("renders formatted date", () => {
       render(<PostCard post={post} />);
-      expect(screen.getByText(/Feb.*20.*2025/)).toBeInTheDocument();
+      expect(screen.getByText(/Feb.*20.*2025/)).toBeTruthy();
     });
 
     it("renders preview when present", () => {
       render(<PostCard post={post} />);
-      expect(screen.getByText(/A short preview/)).toBeInTheDocument();
+      expect(screen.getByText(/A short preview/)).toBeTruthy();
     });
   });
 
@@ -36,7 +37,7 @@ describe("PostCard", () => {
     it("links to /posts/[slug]", () => {
       render(<PostCard post={post} />);
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href", "/posts/my-first-post");
+      expect(link.getAttribute("href")).toBe("/posts/my-first-post");
     });
   });
 });
