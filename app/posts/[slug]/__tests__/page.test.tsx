@@ -4,9 +4,11 @@ import PostPage from "../page";
 
 vi.mock("@/lib/gistClient", () => ({
   getPostBySlug: vi.fn(),
+  getGistIdsForAccount: vi.fn(),
 }));
 
 vi.mock("@/config/gist", () => ({
+  GIST_ACCOUNT: "",
   GIST_IDS: ["g1"],
 }));
 

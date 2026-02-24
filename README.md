@@ -36,11 +36,18 @@ A blog powered by Next.js and GitHub Gists.
    cp .env.example .env.local
    ```
 
-   | Variable   | Description                                            |
-   | ---------- | ------------------------------------------------------ |
-   | `GIST_IDS` | Comma-separated list of GitHub Gist IDs used as posts |
+   | Variable           | Description                                                       |
+   | ------------------ | ----------------------------------------------------------------- |
+   | `GIST_ACCOUNT`     | GitHub username whose public Gists are used as posts (recommended) |
+   | `GITHUB_USERNAME`  | Fallback for `GIST_ACCOUNT`                                       |
+   | `GIST_IDS`         | Fallback: comma-separated Gist IDs when no account is configured  |
 
-   Example:
+   Example (recommended):
+   ```env
+   GIST_ACCOUNT=your-github-username
+   ```
+
+   Example (legacy):
    ```env
    GIST_IDS=abc123def456,ghi789jkl012
    ```

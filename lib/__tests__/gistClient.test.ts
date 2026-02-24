@@ -5,6 +5,9 @@ import {
   fetchPosts,
   fetchPostContent,
   getPostBySlug,
+  fetchPublicGistsForUser,
+  fetchPostsFromAccount,
+  getGistIdsForAccount,
 } from "../gistClient";
 
 describe("gistClient", () => {
@@ -12,7 +15,100 @@ describe("gistClient", () => {
     vi.restoreAllMocks();
   });
 
-  describe("US-001-AC01: Posts are fetched from configured Gist", () => {
+  describe("US-001-AC01: Posts from account (GitHub Gists API)", () => {
+    it("fetchPublicGistsForUser fetches from users API (US-001-AC03)", async () => {
+      const mockGists = [
+        {
+          id: "g1",
+          files: {
+            "my-post.md": {
+              filename: "my-post.md",
+              type: "text/markdown",
+            },
+          },
+          created_at: "2025-01-01T00:00:00Z",
+          updated_at: "2025-02-20T12:00:00Z",
+        },
+      ];
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGists,
+      } as Response);
+
+      const gists = await fetchPublicGistsForUser("octocat");
+      expect(gists).toHaveLength(1);
+      expect(gists[0].id).toBe("g1");
+      expect(fetch).toHaveBeenCalledWith(
+        "https://api.github.com/users/octocat/gists",
+        expect.any(Object)
+      );
+    });
+
+    it("fetchPostsFromAccount returns posts with title and date (US-001-AC02)", async () => {
+      const mockGists = [
+        {
+          id: "g1",
+          files: {
+            "hello-world.md": {
+              filename: "hello-world.md",
+              type: "text/markdown",
+            },
+          },
+          created_at: "2025-01-01T00:00:00Z",
+          updated_at: "2025-02-20T12:00:00Z",
+        },
+      ];
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGists,
+      } as Response);
+
+      const posts = await fetchPostsFromAccount("octocat");
+      expect(posts).toHaveLength(1);
+      expect(posts[0].title).toBe("hello world");
+      expect(posts[0].date).toBe("2025-02-20T12:00:00Z");
+      expect(posts[0].slug).toBe("hello-world");
+      expect(posts[0].gistId).toBe("g1");
+    });
+
+    it("fetchPostsFromAccount returns empty array when account has no Gists (US-001-AC04)", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => [],
+      } as Response);
+
+      const posts = await fetchPostsFromAccount("emptyuser");
+      expect(posts).toEqual([]);
+    });
+
+    it("fetchPublicGistsForUser returns empty array when API fails", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: false,
+      } as Response);
+
+      const gists = await fetchPublicGistsForUser("baduser");
+      expect(gists).toEqual([]);
+    });
+
+    it("getGistIdsForAccount returns gist IDs for account", async () => {
+      const mockGists = [
+        { id: "g1", files: {}, created_at: "", updated_at: "" },
+        { id: "g2", files: {}, created_at: "", updated_at: "" },
+      ];
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => mockGists,
+      } as Response);
+
+      const ids = await getGistIdsForAccount("octocat");
+      expect(ids).toEqual(["g1", "g2"]);
+    });
+  });
+
+  describe("Posts from configured Gist IDs (fallback)", () => {
     it("TC-001-01: Gist client fetches metadata from configured Gist ID", async () => {
       const mockGist = {
         id: "configured-gist-id",

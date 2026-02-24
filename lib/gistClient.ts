@@ -5,8 +5,6 @@
 
 import type { Post } from "./types";
 
-const GIST_API_BASE = "https://api.github.com/gists";
-
 interface GistFile {
   filename: string;
   type: string;
@@ -19,6 +17,20 @@ interface GistResponse {
   created_at: string;
   updated_at: string;
 }
+
+interface GistListFile {
+  filename: string;
+  type: string;
+}
+
+interface GistListResponse {
+  id: string;
+  files: Record<string, GistListFile>;
+  created_at: string;
+  updated_at: string;
+}
+
+const GITHUB_API_BASE = "https://api.github.com";
 
 const PREVIEW_LENGTH = 120;
 
@@ -43,7 +55,7 @@ function extractPreview(content: string): string {
 
 export async function fetchGist(gistId: string): Promise<GistResponse | null> {
   try {
-    const res = await fetch(`${GIST_API_BASE}/${gistId}`, {
+    const res = await fetch(`${GITHUB_API_BASE}/gists/${gistId}`, {
       headers: { Accept: "application/vnd.github+json" },
       next: { revalidate: 60 },
     });
@@ -52,6 +64,64 @@ export async function fetchGist(gistId: string): Promise<GistResponse | null> {
   } catch {
     return null;
   }
+}
+
+export async function fetchPublicGistsForUser(
+  username: string
+): Promise<GistListResponse[]> {
+  try {
+    const res = await fetch(
+      `${GITHUB_API_BASE}/users/${encodeURIComponent(username)}/gists`,
+      {
+        headers: { Accept: "application/vnd.github+json" },
+        next: { revalidate: 60 },
+      }
+    );
+    if (!res.ok) return [];
+    return (await res.json()) as GistListResponse[];
+  } catch {
+    return [];
+  }
+}
+
+function gistListToPosts(gists: GistListResponse[]): Post[] {
+  const posts: Post[] = [];
+
+  for (const gist of gists) {
+    const updatedAt = gist.updated_at;
+
+    for (const file of Object.values(gist.files)) {
+      if (!file.filename.toLowerCase().endsWith(".md")) continue;
+      const slug = slugFromFilename(file.filename);
+      const title = titleFromFilename(file.filename);
+
+      posts.push({
+        slug,
+        title,
+        date: updatedAt,
+        preview: "",
+        gistId: gist.id,
+        filename: file.filename,
+      });
+    }
+  }
+
+  return posts;
+}
+
+export async function fetchPostsFromAccount(
+  username: string
+): Promise<Post[]> {
+  const gists = await fetchPublicGistsForUser(username);
+  const posts = gistListToPosts(gists);
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+}
+
+export async function getGistIdsForAccount(username: string): Promise<string[]> {
+  const gists = await fetchPublicGistsForUser(username);
+  return gists.map((g) => g.id);
 }
 
 export function gistToPosts(gist: GistResponse): Post[] {

@@ -1,9 +1,16 @@
-import { fetchPosts } from "@/lib/gistClient";
+import {
+  fetchPosts,
+  fetchPostsFromAccount,
+} from "@/lib/gistClient";
 import { PostCard } from "@/components/PostCard";
-import { GIST_IDS } from "@/config/gist";
+import { GIST_ACCOUNT, GIST_IDS } from "@/config/gist";
 
 export default async function HomePage() {
-  const posts = GIST_IDS.length > 0 ? await fetchPosts(GIST_IDS) : [];
+  const posts = GIST_ACCOUNT
+    ? await fetchPostsFromAccount(GIST_ACCOUNT)
+    : GIST_IDS.length > 0
+      ? await fetchPosts(GIST_IDS)
+      : [];
 
   return (
     <>
@@ -20,8 +27,8 @@ export default async function HomePage() {
         <div className="empty-state">
           <h3 className="empty-state__title">No posts yet</h3>
           <p className="empty-state__text">
-            Configure GIST_IDS in your environment to load posts from GitHub
-            Gist.
+            Configure GIST_ACCOUNT or GITHUB_USERNAME in your environment to load
+            posts from your GitHub Gists.
           </p>
         </div>
       )}
