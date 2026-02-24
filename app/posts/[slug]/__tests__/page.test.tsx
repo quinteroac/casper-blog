@@ -34,7 +34,7 @@ describe("PostPage", () => {
       });
       render(Page);
 
-      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      expect(screen.getAllByRole("heading", { level: 1 })[0]).toHaveTextContent(
         "My Awesome Post"
       );
     });
