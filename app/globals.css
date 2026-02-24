@@ -45,6 +45,68 @@ body {
   font-weight: 700;
 }
 
+/* ── About Me ─────────────────────────────────────────────────── */
+
+.about-me {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.about-me__heading {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.about-me__profile {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.about-me__avatar {
+  flex-shrink: 0;
+}
+
+.about-me__fields {
+  flex: 1;
+  min-width: 0;
+}
+
+.about-me__name {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.about-me__bio {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.about-me__location {
+  margin: 0 0 0.25rem;
+  font-size: 0.9375rem;
+  color: #666;
+}
+
+.about-me__website {
+  margin: 0.5rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.about-me__website a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.about-me__website a:hover {
+  text-decoration: underline;
+}
+
 .post-list {
   list-style: none;
   margin: 0;

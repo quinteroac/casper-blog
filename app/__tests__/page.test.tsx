@@ -7,6 +7,10 @@ vi.mock("@/lib/gistClient", () => ({
   fetchPostsFromAccount: vi.fn(),
 }));
 
+vi.mock("@/lib/profileClient", () => ({
+  fetchAboutMeContent: vi.fn(),
+}));
+
 const testConfig = { GIST_ACCOUNT: "", GIST_IDS: [] as string[] };
 vi.mock("@/config/gist", () => ({
   get GIST_ACCOUNT() {
@@ -23,11 +27,13 @@ vi.mock("@/config/env", () => ({
 }));
 
 const { fetchPosts, fetchPostsFromAccount } = await import("@/lib/gistClient");
+const { fetchAboutMeContent } = await import("@/lib/profileClient");
 
 describe("HomePage", () => {
   beforeEach(() => {
     vi.mocked(fetchPostsFromAccount).mockResolvedValue([]);
     vi.mocked(fetchPosts).mockResolvedValue([]);
+    vi.mocked(fetchAboutMeContent).mockResolvedValue(null);
     testConfig.GIST_ACCOUNT = "";
     testConfig.GIST_IDS = [];
   });
@@ -99,6 +105,84 @@ describe("HomePage", () => {
 
       expect(screen.getByText("hello world")).toBeInTheDocument();
       expect(screen.getByText(/Jan 15, 2025/)).toBeInTheDocument();
+    });
+  });
+
+  describe("US-001-AC01: About Me section on home page", () => {
+    it("renders About Me section above post list when GIST_ACCOUNT and content available", async () => {
+      testConfig.GIST_ACCOUNT = "octocat";
+      testConfig.GIST_IDS = [];
+      vi.mocked(fetchAboutMeContent).mockResolvedValueOnce({
+        type: "readme",
+        markdown: "# Hi there\n\nWelcome to my blog.",
+      });
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([
+        {
+          slug: "my-post",
+          title: "My Post",
+          date: "2025-02-20T12:00:00Z",
+          preview: "Preview",
+          gistId: "g1",
+          filename: "my-post.md",
+        },
+      ]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(
+        screen.getByRole("heading", { name: "About Me" })
+      ).toBeInTheDocument();
+      expect(screen.getByText("Hi there")).toBeInTheDocument();
+      expect(screen.getByText("My Post")).toBeInTheDocument();
+    });
+
+    it("US-001-AC03: omits About Me section when no content — page does not break", async () => {
+      testConfig.GIST_ACCOUNT = "octocat";
+      vi.mocked(fetchAboutMeContent).mockResolvedValueOnce(null);
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(screen.queryByRole("heading", { name: "About Me" })).toBeNull();
+      expect(screen.getByText(/No posts yet/i)).toBeInTheDocument();
+    });
+
+    it("renders profile fallback when README not available", async () => {
+      testConfig.GIST_ACCOUNT = "octocat";
+      vi.mocked(fetchAboutMeContent).mockResolvedValueOnce({
+        type: "profile",
+        fields: {
+          avatarUrl: "https://avatars.github.com/octocat",
+          name: "The Octocat",
+          bio: "There once was...",
+          location: "San Francisco",
+          website: "https://octocat.github.io",
+          username: "octocat",
+        },
+      });
+      vi.mocked(fetchPostsFromAccount).mockResolvedValueOnce([]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(
+        screen.getByRole("heading", { name: "About Me" })
+      ).toBeInTheDocument();
+      expect(screen.getByText("The Octocat")).toBeInTheDocument();
+      expect(screen.getByText("There once was...")).toBeInTheDocument();
+    });
+
+    it("omits About Me when GIST_ACCOUNT not set (GIST_IDS only)", async () => {
+      testConfig.GIST_ACCOUNT = "";
+      testConfig.GIST_IDS = ["gist1"];
+      vi.mocked(fetchPosts).mockResolvedValueOnce([]);
+
+      const Page = await HomePage();
+      render(Page);
+
+      expect(screen.queryByRole("heading", { name: "About Me" })).toBeNull();
     });
   });
 

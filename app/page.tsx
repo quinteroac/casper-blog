@@ -2,8 +2,10 @@ import {
   fetchPosts,
   fetchPostsFromAccount,
 } from "@/lib/gistClient";
+import { fetchAboutMeContent } from "@/lib/profileClient";
 import { PostCard } from "@/components/PostCard";
 import { AuthorAvatar } from "@/components/AuthorAvatar";
+import { AboutMe } from "@/components/AboutMe";
 import { GIST_ACCOUNT, GIST_IDS } from "@/config/gist";
 import { isGistSourceConfigured } from "@/config/env";
 
@@ -15,8 +17,13 @@ export default async function HomePage() {
       ? await fetchPosts(GIST_IDS)
       : [];
 
+  const aboutMeContent = GIST_ACCOUNT
+    ? await fetchAboutMeContent(GIST_ACCOUNT)
+    : null;
+
   return (
     <>
+      {aboutMeContent && <AboutMe content={aboutMeContent} />}
       <h2 className="page-heading">Posts</h2>
       {posts.length > 0 ? (
         <ul className="post-list">
