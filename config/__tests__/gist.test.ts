@@ -12,10 +12,12 @@ describe("gist config", () => {
     process.env = originalEnv;
   });
 
-  it("resolves GIST_IDS from env as comma-separated list", async () => {
-    process.env.GIST_IDS = "id1,id2,id3";
-    const { GIST_IDS } = await import("../gist");
-    expect(GIST_IDS).toEqual(["id1", "id2", "id3"]);
+  describe("US-001, FR-4: Gist ID(s) from env/config", () => {
+    it("TC-001-02: Config resolves Gist ID from env/config", async () => {
+      process.env.GIST_IDS = "id1,id2,id3";
+      const { GIST_IDS } = await import("../gist");
+      expect(GIST_IDS).toEqual(["id1", "id2", "id3"]);
+    });
   });
 
   it("trims whitespace from each ID", async () => {
