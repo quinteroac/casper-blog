@@ -3,6 +3,7 @@ import {
   fetchPostsFromAccount,
 } from "@/lib/gistClient";
 import { PostCard } from "@/components/PostCard";
+import { AuthorAvatar } from "@/components/AuthorAvatar";
 import { GIST_ACCOUNT, GIST_IDS } from "@/config/gist";
 import { isGistSourceConfigured } from "@/config/env";
 
@@ -21,12 +22,17 @@ export default async function HomePage() {
         <ul className="post-list">
           {posts.map((post) => (
             <li key={`${post.gistId}-${post.slug}`}>
-              <PostCard post={post} />
+              <PostCard post={post} authorAccount={GIST_ACCOUNT || undefined} />
             </li>
           ))}
         </ul>
       ) : (
         <div className="empty-state">
+          <AuthorAvatar
+            account={GIST_ACCOUNT || undefined}
+            size={48}
+            className="empty-state__avatar"
+          />
           <h3 className="empty-state__title">No posts yet</h3>
           <p className="empty-state__text">
             {configured

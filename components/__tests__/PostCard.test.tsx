@@ -40,4 +40,23 @@ describe("PostCard", () => {
       expect(link.getAttribute("href")).toBe("/posts/my-first-post");
     });
   });
+
+  describe("US-001: Author avatar", () => {
+    it("renders avatar img when authorAccount is provided", () => {
+      render(<PostCard post={post} authorAccount="octocat" />);
+      expect(
+        screen.getByRole("img", { name: /avatar for octocat/i })
+      ).toBeInTheDocument();
+    });
+
+    it("shows fallback when authorAccount is empty", () => {
+      render(<PostCard post={post} authorAccount="" />);
+      expect(screen.getByText("?")).toBeInTheDocument();
+    });
+
+    it("shows fallback when authorAccount is not passed", () => {
+      render(<PostCard post={post} />);
+      expect(screen.getByText("?")).toBeInTheDocument();
+    });
+  });
 });

@@ -1,0 +1,73 @@
+{
+  "goals": [
+    "Display the author's avatar on the post list page.",
+    "Retrieve the avatar from GitHub using the `GIST_ACCOUNT` identity (no local storage or manual upload needed)."
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Display author avatar on the post list page",
+      "description": "As an author/admin, I want my profile picture to appear on the post list page so that readers can see who wrote the blog.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "The post list page (`/`) renders the author's avatar image."
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "The avatar is visible without requiring the reader to be logged in."
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "The avatar URL is derived from `GIST_ACCOUNT` (no hardcoded URLs)."
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "The avatar is fetched server-side (server component or `getServerSideProps`-equivalent) — not in the browser."
+        },
+        {
+          "id": "US-001-AC05",
+          "text": "If the avatar fails to load, a fallback is shown. The exact fallback type (e.g. generic user icon or first letter of username) is an implementation choice, but a broken image must never be displayed."
+        },
+        {
+          "id": "US-001-AC06",
+          "text": "If `GIST_ACCOUNT` is missing or empty, the fallback (same as for failed avatar load) is shown and no error is thrown."
+        },
+        {
+          "id": "US-001-AC07",
+          "text": "Changing the GitHub profile picture is reflected on the blog without a code change (only a cache/redeploy may be needed)."
+        },
+        {
+          "id": "US-001-AC08",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-001-AC09",
+          "text": "Visually verified in browser: avatar appears on the post list page."
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "The application must read the GitHub username from the `GIST_ACCOUNT` environment variable."
+    },
+    {
+      "id": "FR-2",
+      "description": "The avatar URL must be constructed using the GitHub CDN pattern (e.g. `https://github.com/<username>.png` or `https://avatars.githubusercontent.com/<username>`)."
+    },
+    {
+      "id": "FR-3",
+      "description": "The avatar image must be rendered in the post list page component using a Next.js `<Image>` component (or `<img>` with appropriate sizing)."
+    },
+    {
+      "id": "FR-4",
+      "description": "The avatar fetch must occur server-side to avoid exposing unnecessary client-side requests."
+    },
+    {
+      "id": "FR-5",
+      "description": "A fallback must be defined for cases where the avatar cannot be loaded or `GIST_ACCOUNT` is missing."
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+import React from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { AuthorAvatar } from "../AuthorAvatar";
+
+describe("AuthorAvatar", () => {
+  describe("US-001-AC01: Renders author avatar", () => {
+    it("renders img with GitHub avatar URL when account is provided", () => {
+      render(<AuthorAvatar account="octocat" />);
+      const img = screen.getByRole("img", { name: /avatar for octocat/i });
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute("src", "https://github.com/octocat.png");
+    });
+  });
+
+  describe("US-001-AC05: Fallback when avatar fails to load", () => {
+    it("shows fallback (first letter) when img onError fires", () => {
+      render(<AuthorAvatar account="octocat" />);
+      const img = screen.getByRole("img", { name: /avatar for octocat/i });
+      expect(img).toBeInTheDocument();
+
+      // Simulate image load failure
+      fireEvent.error(img);
+
+      // Fallback should show first letter - broken image must never be displayed
+      expect(screen.getByText("O")).toBeInTheDocument();
+    });
+  });
+
+  describe("US-001-AC06: Fallback when GIST_ACCOUNT missing or empty", () => {
+    it("shows fallback (?) when account is undefined", () => {
+      render(<AuthorAvatar account={undefined} />);
+      expect(screen.getByText("?")).toBeInTheDocument();
+      expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    });
+
+    it("shows fallback (?) when account is empty string", () => {
+      render(<AuthorAvatar account="" />);
+      expect(screen.getByText("?")).toBeInTheDocument();
+    });
+
+    it("does not throw when account is missing", () => {
+      expect(() => render(<AuthorAvatar account={undefined} />)).not.toThrow();
+    });
+  });
+
+  describe("US-001-AC02: Avatar visible without login", () => {
+    it("renders avatar/fallback without requiring authentication", () => {
+      render(<AuthorAvatar account="testuser" />);
+      expect(screen.getByRole("img")).toBeInTheDocument();
+    });
+  });
+});
