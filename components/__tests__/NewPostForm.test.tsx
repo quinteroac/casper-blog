@@ -155,6 +155,77 @@ describe("US-003: Save Gist and view created posts", () => {
       });
     });
 
+  });
+
+  describe("US-003-AC02: Markdown string sent to /api/gists unchanged", () => {
+    it("sends the Markdown string from the editor as the request body unchanged", async () => {
+      const markdownBody =
+        "# Hello World\n\n**bold** and *italic*\n\n- Item 1\n- Item 2";
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          id: "gist-1",
+          title: "My Post",
+          slug: "my-post",
+          filename: "My-Post.md",
+          date: "2026-02-24T10:00:00Z",
+        }),
+      } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), {
+        target: { value: "My Post" },
+      });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), {
+        target: { value: markdownBody },
+      });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith(
+          "/api/gists",
+          expect.objectContaining({
+            method: "POST",
+            body: JSON.stringify({ title: "My Post", body: markdownBody }),
+          })
+        );
+      });
+    });
+
+    it("payload shape matches { title, body } with body as the Markdown string", async () => {
+      const markdownBody = "```\nconst x = 1;\n```";
+
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          id: "g1",
+          title: "Code Post",
+          slug: "code-post",
+          filename: "Code-Post.md",
+          date: "2026-02-24T00:00:00Z",
+        }),
+      } as Response);
+
+      render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
+      fireEvent.change(screen.getByLabelText("Title"), {
+        target: { value: "Code Post" },
+      });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), {
+        target: { value: markdownBody },
+      });
+      fireEvent.click(screen.getByText("Save"));
+
+      await waitFor(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const [, options] = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls[0] as [string, { body: string }];
+        const parsed = JSON.parse(options.body);
+        expect(parsed).toEqual({ title: "Code Post", body: markdownBody });
+      });
+    });
+  });
+
+  describe("US-003-AC01 (continued): Save button creates a new Gist via the GitHub API", () => {
     it("shows 'Saving…' while the request is in flight", async () => {
       let resolvePromise: (value: Response) => void;
       const responsePromise = new Promise<Response>((resolve) => {
