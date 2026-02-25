@@ -1,0 +1,133 @@
+{
+  "goals": [
+    "Replace the plain textarea in `NewPostForm` with a TipTap rich text editor.",
+    "Give the author visual formatting controls (bold, italic, headings, lists, code, etc.).",
+    "Preserve the existing data flow: content is serialised to Markdown and saved to GitHub Gists.",
+    "Keep the door open for AI extensions in future iterations (no AI scope now)."
+  ],
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Author sees a rich text editor when creating a post",
+      "description": "As a blog author authenticated via GitHub OAuth, I want to see a TipTap rich text editor instead of a plain textarea on the new-post form so that I can write and format content visually.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-001-AC01",
+          "text": "The `NewPostForm` component renders a TipTap `<Editor>` in place of the `<textarea>`."
+        },
+        {
+          "id": "US-001-AC02",
+          "text": "The editor displays a toolbar with at minimum: Bold, Italic, Heading (H1–H3), Unordered list, Ordered list, Code block, Blockquote."
+        },
+        {
+          "id": "US-001-AC03",
+          "text": "The editor is visually consistent with the existing admin UI (no unstyled raw DOM)."
+        },
+        {
+          "id": "US-001-AC04",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-001-AC05",
+          "text": "Visually verified in browser."
+        }
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Author can format content using the toolbar",
+      "description": "As a blog author, I want to apply formatting (bold, italic, headings, lists, code blocks) via toolbar buttons so that I do not have to type Markdown syntax manually.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-002-AC01",
+          "text": "Clicking Bold toggles `<strong>` formatting on selected text."
+        },
+        {
+          "id": "US-002-AC02",
+          "text": "Clicking Italic toggles `<em>` formatting on selected text."
+        },
+        {
+          "id": "US-002-AC03",
+          "text": "Clicking Heading H1/H2/H3 applies the corresponding heading to the current line."
+        },
+        {
+          "id": "US-002-AC04",
+          "text": "Clicking Unordered List / Ordered List wraps the current line in a list."
+        },
+        {
+          "id": "US-002-AC05",
+          "text": "Clicking Code Block wraps the current block in a code fence."
+        },
+        {
+          "id": "US-002-AC06",
+          "text": "Clicking Blockquote wraps the current block in a blockquote."
+        },
+        {
+          "id": "US-002-AC07",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-002-AC08",
+          "text": "Visually verified in browser."
+        }
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Post content is saved to GitHub Gists as Markdown",
+      "description": "As a blog author, I want the TipTap editor content to be converted to Markdown when I submit the form so that the post is stored in GitHub Gists exactly as before and remains readable in the existing blog.",
+      "acceptanceCriteria": [
+        {
+          "id": "US-003-AC01",
+          "text": "On form submit, TipTap's document is serialised to Markdown (e.g. via `@tiptap/pm` + a Markdown serialiser or equivalent open-source utility)."
+        },
+        {
+          "id": "US-003-AC02",
+          "text": "The resulting Markdown string is sent to `/api/gists` unchanged from the current payload shape."
+        },
+        {
+          "id": "US-003-AC03",
+          "text": "A post created via the TipTap editor is visible on the blog home page and renders correctly on its detail page."
+        },
+        {
+          "id": "US-003-AC04",
+          "text": "Heading, bold, italic, list, code block, and blockquote formatting round-trips correctly (TipTap → Markdown → react-markdown render)."
+        },
+        {
+          "id": "US-003-AC05",
+          "text": "Typecheck / lint passes."
+        },
+        {
+          "id": "US-003-AC06",
+          "text": "Visually verified in browser (post appears and renders as expected)."
+        }
+      ]
+    }
+  ],
+  "functionalRequirements": [
+    {
+      "id": "FR-1",
+      "description": "** Install `@tiptap/react`, `@tiptap/starter-kit`, and any open-source Markdown serialisation package required (e.g. `tiptap-markdown` or `prosemirror-markdown`). No TipTap Pro or Cloud packages."
+    },
+    {
+      "id": "FR-2",
+      "description": "** Create a `RichTextEditor` component (or extend `NewPostForm`) that wraps the TipTap `useEditor` hook and renders the editor with the toolbar described in US-001/US-002."
+    },
+    {
+      "id": "FR-3",
+      "description": "** The `RichTextEditor` must expose a controlled interface: accept an `onChange` callback that fires with the current Markdown string on every editor change."
+    },
+    {
+      "id": "FR-4",
+      "description": "** `NewPostForm` must use the Markdown string from `RichTextEditor` as the post body sent to `/api/gists`; no other changes to the API route or Gist client."
+    },
+    {
+      "id": "FR-5",
+      "description": "** Only open-source TipTap extensions may be used (StarterKit covers most; any additional extensions must be from the `@tiptap/*` open-source packages or community equivalents)."
+    },
+    {
+      "id": "FR-6",
+      "description": "** Existing unit tests must continue to pass; add tests for the `RichTextEditor` component covering: editor renders, toolbar buttons trigger correct formatting, `onChange` emits valid Markdown."
+    }
+  ]
+}
