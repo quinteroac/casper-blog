@@ -182,5 +182,85 @@ describe("AboutMe", () => {
       const link = screen.getByRole("link", { name: "example.com" });
       expect(link).toHaveAttribute("href", "https://example.com");
     });
+
+    describe("US-002: Profile photo from GitHub profile", () => {
+      it("US-002-AC01: in readme mode photo is avatar for GitHub user from gist username", () => {
+        render(
+          <AboutMe
+            username="gist-username"
+            content={{ type: "readme", markdown: "# Hi" }}
+          />
+        );
+        const img = screen.getByRole("img", {
+          name: "Avatar for gist-username",
+        });
+        expect(img).toBeInTheDocument();
+        expect(img).toHaveAttribute(
+          "src",
+          "https://github.com/gist-username.png"
+        );
+      });
+
+      it("US-002-AC01: in profile mode photo is avatar for same GitHub user (fields from that user)", () => {
+        render(
+          <AboutMe
+            username="gist-account"
+            content={{
+              type: "profile",
+              fields: {
+                avatarUrl: "https://avatars.githubusercontent.com/u/99",
+                name: "Author",
+                bio: null,
+                location: null,
+                website: null,
+                username: "gist-account",
+              },
+            }}
+          />
+        );
+        const img = screen.getByRole("img", {
+          name: "Avatar for gist-account",
+        });
+        expect(img).toBeInTheDocument();
+        expect(img).toHaveAttribute("src", "https://avatars.githubusercontent.com/u/99");
+      });
+
+      it("US-002-AC02: in profile mode avatar URL from profile data (avatar_url or fallback) is used", () => {
+        render(
+          <AboutMe
+            username="johndoe"
+            content={{
+              type: "profile",
+              fields: {
+                avatarUrl: "https://avatars.github.com/johndoe",
+                name: "John",
+                bio: null,
+                location: null,
+                website: null,
+                username: "johndoe",
+              },
+            }}
+          />
+        );
+        const img = screen.getByRole("img", { name: "Avatar for johndoe" });
+        expect(img).toHaveAttribute("src", "https://avatars.github.com/johndoe");
+      });
+
+      it("US-002-AC02: in readme mode URL is built from gist username when no profile fetch", () => {
+        render(
+          <AboutMe
+            username="readme-user"
+            content={{ type: "readme", markdown: "# Hello" }}
+          />
+        );
+        const img = screen.getByRole("img", {
+          name: "Avatar for readme-user",
+        });
+        expect(img).toHaveAttribute(
+          "src",
+          "https://github.com/readme-user.png"
+        );
+      });
+    });
   });
 });

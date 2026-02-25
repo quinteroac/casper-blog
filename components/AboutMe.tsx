@@ -41,6 +41,7 @@ export function AboutMe({ username, content }: AboutMeProps) {
       <div className="about-me__profile">
         <AuthorAvatar
           account={fields.username}
+          avatarUrl={fields.avatarUrl}
           size={80}
           className="about-me__avatar"
         />

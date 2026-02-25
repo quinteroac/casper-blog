@@ -121,6 +121,30 @@ describe("profileClient", () => {
       const result = await fetchUserProfile("octocat");
       expect(result).toBeNull();
     });
+
+    it("US-002-AC02: uses avatar_url from API when present, else fallback from username", async () => {
+      vi.spyOn(global, "fetch").mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          avatar_url: undefined,
+          name: "Fallback User",
+          bio: null,
+          location: null,
+          blog: null,
+          login: "fallbackuser",
+        }),
+      } as Response);
+
+      const result = await fetchUserProfile("fallbackuser");
+      expect(result).toEqual({
+        avatarUrl: "https://github.com/fallbackuser.png",
+        name: "Fallback User",
+        bio: null,
+        location: null,
+        website: null,
+        username: "fallbackuser",
+      });
+    });
   });
 
   describe("fetchAboutMeContent", () => {
