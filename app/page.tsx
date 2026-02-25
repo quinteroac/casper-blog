@@ -23,7 +23,12 @@ export default async function HomePage() {
 
   return (
     <>
-      {aboutMeContent && <AboutMe content={aboutMeContent} />}
+      {aboutMeContent && (
+        <AboutMe
+          username={GIST_ACCOUNT}
+          content={aboutMeContent}
+        />
+      )}
       <h2 className="page-heading">Posts</h2>
       {posts.length > 0 ? (
         <ul className="post-list">

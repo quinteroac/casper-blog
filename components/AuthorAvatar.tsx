@@ -6,6 +6,11 @@ import { getGitHubAvatarUrl, getAvatarFallbackLetter } from "@/lib/avatar";
 interface AuthorAvatarProps {
   /** GitHub username from GIST_ACCOUNT. When empty, fallback is shown. */
   account: string | undefined;
+  /**
+   * Optional avatar URL (e.g. from GitHub API avatar_url).
+   * When provided, used instead of building from username (US-002: same as GitHub profile).
+   */
+  avatarUrl?: string;
   /** Size in pixels. Default 40. */
   size?: number;
   /** Optional className for the wrapper. */
@@ -19,6 +24,7 @@ interface AuthorAvatarProps {
  */
 export function AuthorAvatar({
   account,
+  avatarUrl: avatarUrlProp,
   size = 40,
   className = "",
 }: AuthorAvatarProps) {
@@ -39,7 +45,7 @@ export function AuthorAvatar({
     );
   }
 
-  const avatarUrl = getGitHubAvatarUrl(account);
+  const avatarUrl = avatarUrlProp ?? getGitHubAvatarUrl(account!);
 
   return (
     <img

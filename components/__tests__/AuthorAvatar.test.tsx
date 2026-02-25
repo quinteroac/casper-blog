@@ -50,4 +50,21 @@ describe("AuthorAvatar", () => {
       expect(screen.getByRole("img")).toBeInTheDocument();
     });
   });
+
+  describe("US-002-AC02: Optional avatarUrl from profile", () => {
+    it("uses avatarUrl when provided (e.g. from GitHub API avatar_url)", () => {
+      const apiAvatarUrl = "https://avatars.githubusercontent.com/u/1?v=4";
+      render(
+        <AuthorAvatar account="octocat" avatarUrl={apiAvatarUrl} />
+      );
+      const img = screen.getByRole("img", { name: /avatar for octocat/i });
+      expect(img).toHaveAttribute("src", apiAvatarUrl);
+    });
+
+    it("builds URL from account when avatarUrl is not provided", () => {
+      render(<AuthorAvatar account="myuser" />);
+      const img = screen.getByRole("img", { name: /avatar for myuser/i });
+      expect(img).toHaveAttribute("src", "https://github.com/myuser.png");
+    });
+  });
 });
