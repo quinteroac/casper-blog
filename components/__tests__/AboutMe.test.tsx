@@ -135,7 +135,7 @@ describe("AboutMe", () => {
       );
       const avatar = screen.getByRole("img", { name: "Avatar for alice" });
       expect(avatar).toBeInTheDocument();
-      expect(avatar).toHaveAttribute("src", expect.stringContaining("alice"));
+      expect(avatar).toHaveAttribute("src", "https://example.com/av.png");
       expect(screen.getByText("Alice")).toBeInTheDocument();
     });
 
