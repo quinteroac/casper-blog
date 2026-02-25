@@ -133,6 +133,9 @@ describe("HomePage", () => {
       expect(
         screen.getByRole("heading", { name: "About Me" })
       ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: "Avatar for octocat" })
+      ).toBeInTheDocument();
       expect(screen.getByText("Hi there")).toBeInTheDocument();
       expect(screen.getByText("My Post")).toBeInTheDocument();
     });

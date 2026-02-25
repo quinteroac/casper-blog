@@ -59,6 +59,17 @@ body {
   font-weight: 700;
 }
 
+.about-me__banner {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.about-me__banner .about-me__heading {
+  margin: 0;
+}
+
 .about-me__profile {
   display: flex;
   gap: 1.5rem;

@@ -7,16 +7,58 @@ describe("AboutMe", () => {
   describe("US-001-AC01: About Me section", () => {
     it("renders 'About Me' heading", () => {
       render(
-        <AboutMe content={{ type: "readme", markdown: "# Hello" }} />
+        <AboutMe
+          username="octocat"
+          content={{ type: "readme", markdown: "# Hello" }}
+        />
       );
       expect(
         screen.getByRole("heading", { name: "About Me" })
       ).toBeInTheDocument();
     });
 
+    it("US-001-AC01: when readme mode, a profile image is visible in the About Me block", () => {
+      render(
+        <AboutMe
+          username="myuser"
+          content={{ type: "readme", markdown: "# Hello" }}
+        />
+      );
+      const img = screen.getByRole("img", { name: "Avatar for myuser" });
+      expect(img).toBeInTheDocument();
+    });
+
+    it("US-001-AC02: in readme mode image URL is derived from GitHub username (github.com/username.png)", () => {
+      render(
+        <AboutMe
+          username="ghuser"
+          content={{ type: "readme", markdown: "# Hi" }}
+        />
+      );
+      const img = screen.getByRole("img", { name: "Avatar for ghuser" });
+      expect(img).toHaveAttribute("src", "https://github.com/ghuser.png");
+    });
+
+    it("US-001-AC03: avatar uses username from prop (no hardcoded URL)", () => {
+      render(
+        <AboutMe
+          username="config-username"
+          content={{ type: "readme", markdown: "# Hi" }}
+        />
+      );
+      const img = screen.getByRole("img", {
+        name: "Avatar for config-username",
+      });
+      expect(img).toHaveAttribute(
+        "src",
+        "https://github.com/config-username.png"
+      );
+    });
+
     it("renders README content as markdown", () => {
       render(
         <AboutMe
+          username="octocat"
           content={{
             type: "readme",
             markdown: "# Hello\n\nI am the author.",
@@ -30,6 +72,7 @@ describe("AboutMe", () => {
     it("renders profile fields fallback (avatar, name, bio, location, website)", () => {
       render(
         <AboutMe
+          username="jane"
           content={{
             type: "profile",
             fields: {
@@ -56,6 +99,7 @@ describe("AboutMe", () => {
     it("renders profile with only username when other fields are empty", () => {
       render(
         <AboutMe
+          username="minimal"
           content={{
             type: "profile",
             fields: {
@@ -75,6 +119,7 @@ describe("AboutMe", () => {
     it("US-003-AC02: fallback renders at minimum avatar and display name", () => {
       render(
         <AboutMe
+          username="alice"
           content={{
             type: "profile",
             fields: {
@@ -97,6 +142,7 @@ describe("AboutMe", () => {
     it("US-003-AC03: optional fields (bio, location, website) shown when present", () => {
       render(
         <AboutMe
+          username="bob"
           content={{
             type: "profile",
             fields: {
@@ -119,6 +165,7 @@ describe("AboutMe", () => {
     it("adds https to website when missing", () => {
       render(
         <AboutMe
+          username="user"
           content={{
             type: "profile",
             fields: {
