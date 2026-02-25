@@ -4,7 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@quinteroac/agents-coding-toolkit": "0.1.0-preview",
+        "@quinteroac/agents-coding-toolkit": "^0.1.0-preview",
         "@tiptap/react": "^3.20.0",
         "@tiptap/starter-kit": "^3.20.0",
         "next": "^15.0.0",

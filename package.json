@@ -11,7 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@quinteroac/agents-coding-toolkit": "0.1.0-preview",
+    "@quinteroac/agents-coding-toolkit": "^0.1.0-preview",
     "@tiptap/react": "^3.20.0",
     "@tiptap/starter-kit": "^3.20.0",
     "next": "^15.0.0",
@@ -26,6 +26,7 @@
     "@eslint/eslintrc": "^3.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.0.0",
+    "@types/bun": "latest",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -34,7 +35,6 @@
     "jsdom": "^25.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.0.0",
-    "@types/bun": "latest"
+    "vitest": "^2.0.0"
   }
 }
