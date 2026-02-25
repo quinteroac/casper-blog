@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
+import RichTextEditor from "./RichTextEditor";
 
 export interface SavedPost {
   id: string;
@@ -19,7 +19,6 @@ interface NewPostFormProps {
 export default function NewPostForm({ onCancel, onSaved }: NewPostFormProps) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState<{ title?: string; body?: string }>({});
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -102,41 +101,15 @@ export default function NewPostForm({ onCancel, onSaved }: NewPostFormProps) {
       </div>
 
       <div className="new-post-form__field">
-        <div className="new-post-form__label-row">
-          <label className="new-post-form__label" htmlFor="post-body">
-            Body
-          </label>
-          <button
-            type="button"
-            className="new-post-form__toggle-preview"
-            onClick={() => setShowPreview(!showPreview)}
-          >
-            {showPreview ? "Edit" : "Preview"}
-          </button>
-        </div>
-
-        {showPreview ? (
-          <div className="new-post-form__preview post-content">
-            {body.trim() ? (
-              <ReactMarkdown>{body}</ReactMarkdown>
-            ) : (
-              <p className="new-post-form__preview-empty">Nothing to preview.</p>
-            )}
-          </div>
-        ) : (
-          <textarea
-            id="post-body"
-            className={`new-post-form__textarea ${errors.body ? "new-post-form__textarea--error" : ""}`}
-            value={body}
-            onChange={(e) => {
-              setBody(e.target.value);
-              if (errors.body) setErrors((prev) => ({ ...prev, body: undefined }));
-            }}
-            placeholder="Write your post in Markdown..."
-            rows={16}
-            disabled={saving}
-          />
-        )}
+        <label className="new-post-form__label">Body</label>
+        <RichTextEditor
+          onChange={(markdown) => {
+            setBody(markdown);
+            if (errors.body) setErrors((prev) => ({ ...prev, body: undefined }));
+          }}
+          disabled={saving}
+          hasError={!!errors.body}
+        />
         {errors.body && (
           <span className="new-post-form__error">{errors.body}</span>
         )}

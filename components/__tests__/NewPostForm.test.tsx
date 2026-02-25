@@ -1,9 +1,28 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-// Mock react-markdown to avoid ESM issues in test environment
-vi.mock("react-markdown", () => ({
-  default: ({ children }: { children: string }) => <div data-testid="markdown-preview">{children}</div>,
+// Mock RichTextEditor so form tests run without a real TipTap instance.
+// The mock exposes a textarea with id="post-body" so the existing <label>
+// association (htmlFor-less label + aria-labelledby via the mock) keeps working.
+vi.mock("../RichTextEditor", () => ({
+  default: ({
+    onChange,
+    disabled,
+    hasError,
+  }: {
+    onChange: (v: string) => void;
+    disabled?: boolean;
+    hasError?: boolean;
+  }) => (
+    <textarea
+      id="post-body"
+      aria-label="Body"
+      className={`new-post-form__textarea${hasError ? " new-post-form__textarea--error" : ""}`}
+      onChange={(e) => onChange(e.target.value)}
+      disabled={disabled}
+      data-testid="rich-text-editor"
+    />
+  ),
 }));
 
 import NewPostForm from "../NewPostForm";
@@ -15,7 +34,7 @@ describe("US-002: Create posts with Markdown editor", () => {
     vi.clearAllMocks();
   });
 
-  describe("US-002-AC01: Admin can open a 'New post' form with a Markdown editor (title + body)", () => {
+  describe("US-002-AC01: Admin can open a 'New post' form with a rich editor (title + body)", () => {
     it("renders a heading 'New Post'", () => {
       render(<NewPostForm onCancel={onCancel} />);
       expect(screen.getByText("New Post")).toBeInTheDocument();
@@ -26,9 +45,9 @@ describe("US-002: Create posts with Markdown editor", () => {
       expect(screen.getByLabelText("Title")).toBeInTheDocument();
     });
 
-    it("renders a body textarea", () => {
+    it("renders a body editor", () => {
       render(<NewPostForm onCancel={onCancel} />);
-      expect(screen.getByLabelText("Body")).toBeInTheDocument();
+      expect(screen.getByTestId("rich-text-editor")).toBeInTheDocument();
     });
 
     it("renders a Save button", () => {
@@ -40,48 +59,6 @@ describe("US-002: Create posts with Markdown editor", () => {
       render(<NewPostForm onCancel={onCancel} />);
       fireEvent.click(screen.getByText("Cancel"));
       expect(onCancel).toHaveBeenCalledOnce();
-    });
-  });
-
-  describe("US-002-AC02: Editor supports Markdown syntax", () => {
-    it("shows a Preview toggle button", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      expect(screen.getByText("Preview")).toBeInTheDocument();
-    });
-
-    it("renders Markdown preview when Preview is clicked", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      const textarea = screen.getByLabelText("Body");
-      fireEvent.change(textarea, {
-        target: { value: "# Hello\n\n- list item\n- [link](http://example.com)\n\n```js\ncode\n```" },
-      });
-      fireEvent.click(screen.getByText("Preview"));
-      expect(screen.getByTestId("markdown-preview")).toBeInTheDocument();
-    });
-
-    it("shows 'Edit' button when in preview mode", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      fireEvent.click(screen.getByText("Preview"));
-      expect(screen.getByText("Edit")).toBeInTheDocument();
-    });
-
-    it("switches back to editor when Edit is clicked", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      fireEvent.click(screen.getByText("Preview"));
-      fireEvent.click(screen.getByText("Edit"));
-      expect(screen.getByLabelText("Body")).toBeInTheDocument();
-    });
-
-    it("shows 'Nothing to preview.' when body is empty", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      fireEvent.click(screen.getByText("Preview"));
-      expect(screen.getByText("Nothing to preview.")).toBeInTheDocument();
-    });
-
-    it("uses monospace font on textarea for code authoring", () => {
-      render(<NewPostForm onCancel={onCancel} />);
-      const textarea = screen.getByLabelText("Body");
-      expect(textarea).toHaveClass("new-post-form__textarea");
     });
   });
 
@@ -113,21 +90,33 @@ describe("US-002: Create posts with Markdown editor", () => {
       expect(screen.queryByText("Title is required.")).not.toBeInTheDocument();
     });
 
-    it("clears body error when user starts typing in body", () => {
+    it("clears body error when user types in body editor", () => {
       render(<NewPostForm onCancel={onCancel} />);
       fireEvent.click(screen.getByText("Save"));
       expect(screen.getByText("Body is required.")).toBeInTheDocument();
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "A" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "A" } });
       expect(screen.queryByText("Body is required.")).not.toBeInTheDocument();
     });
 
     it("treats whitespace-only input as empty", () => {
       render(<NewPostForm onCancel={onCancel} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "   " } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "  \n  " } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "  \n  " } });
       fireEvent.click(screen.getByText("Save"));
       expect(screen.getByText("Title is required.")).toBeInTheDocument();
       expect(screen.getByText("Body is required.")).toBeInTheDocument();
+    });
+  });
+
+  describe("US-001-AC01: NewPostForm renders RichTextEditor instead of textarea", () => {
+    it("renders the RichTextEditor component (not a plain textarea)", () => {
+      render(<NewPostForm onCancel={onCancel} />);
+      expect(screen.getByTestId("rich-text-editor")).toBeInTheDocument();
+    });
+
+    it("does not render a preview toggle button", () => {
+      render(<NewPostForm onCancel={onCancel} />);
+      expect(screen.queryByText("Preview")).not.toBeInTheDocument();
     });
   });
 });
@@ -156,7 +145,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "My Post" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "# Hello" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "# Hello" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
@@ -175,7 +164,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "Body" } });
       fireEvent.click(screen.getByText("Save"));
 
       expect(screen.getByText("Saving…")).toBeInTheDocument();
@@ -199,7 +188,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "Body" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
@@ -207,7 +196,7 @@ describe("US-003: Save Gist and view created posts", () => {
       });
 
       expect(screen.getByLabelText("Title")).toBeDisabled();
-      expect(screen.getByLabelText("Body")).toBeDisabled();
+      expect(screen.getByTestId("rich-text-editor")).toBeDisabled();
 
       resolvePromise!({
         ok: true,
@@ -237,7 +226,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "My Post" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "# Hello" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "# Hello" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
@@ -256,7 +245,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "Body" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
@@ -270,7 +259,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "Body" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
@@ -292,7 +281,7 @@ describe("US-003: Save Gist and view created posts", () => {
 
       render(<NewPostForm onCancel={onCancel} onSaved={onSaved} />);
       fireEvent.change(screen.getByLabelText("Title"), { target: { value: "Title" } });
-      fireEvent.change(screen.getByLabelText("Body"), { target: { value: "Body" } });
+      fireEvent.change(screen.getByTestId("rich-text-editor"), { target: { value: "Body" } });
       fireEvent.click(screen.getByText("Save"));
 
       await waitFor(() => {
